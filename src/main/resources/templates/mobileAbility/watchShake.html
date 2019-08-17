@@ -1,0 +1,64 @@
+<!doctype html>
+<html><head>
+	<title>监听摇一摇</title>
+	<link rel="stylesheet" href="../js/details.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+<h1>监听摇一摇</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+
+	YYEsnBridge.ready(function() {
+		console.log('JS got a message ready')
+		// 页面初始化时就需要执行的JSAPI放到这里
+		YYEsnBridge.registerHandler({
+			'watchShake' : function(data, callback){
+				console.log('watchShake has been called');
+				alert('watch shake');
+				// 需要再回调native时调用
+				// typeof callback === 'function' && callback({name:'FromJSName'});
+			}
+		});
+	})
+
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+	var successFunction = function(res) {
+		console.log("success data:" + res);
+	}
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+	}
+
+	function registerWatchShake(e) {
+		var data = {
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction,
+			callback: 'watchShake'
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('watchShake', data)
+	}
+
+	</script>
+<div id='buttons'>
+	<button onclick="registerWatchShake(this)">注册摇一摇监听</button><br>
+</div>
+
+<div id='log'>
+
+</div>
+</body></html>

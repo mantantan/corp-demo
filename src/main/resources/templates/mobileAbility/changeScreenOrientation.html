@@ -1,0 +1,47 @@
+<!doctype html>
+<html><head>
+    <title>强制横竖屏</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type='text/css'>
+        #result { border-bottom:1px solid #ccc; padding:10px 10px; font-family:courier; font-size:60px; width:100%; height:auto; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+        </style>
+        <link rel="stylesheet" href="../js/details.css" type="text/css" />
+</head><body>
+    <h1>强制横竖屏</h1>
+
+    <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+    <script>
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+
+    YYEsnBridge.ready(function() {});
+
+    var completeFunction = function(res) {
+        console.log('complete data:' + res);
+    }
+    var successFunction = function(res) {
+        console.log('success data:' + res);
+    }
+    var failFunction = function(res) {
+        console.log('fail data:' + res);
+    }
+
+    function changeScreenOrientation(e) {
+        var data = {
+            orientation: false,
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('changeScreenOrientation', data)
+    }
+
+        </script>
+    <div>
+        <button onclick="changeScreenOrientation(this)">强制横屏</button><br>
+    </div>
+    <div>
+        <p id="result"></p>
+    </div>
+</body></html>

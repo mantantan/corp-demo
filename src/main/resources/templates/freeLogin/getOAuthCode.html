@@ -1,0 +1,54 @@
+<!doctype html>
+<html><head>
+    <title>获取免登授权码</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type='text/css'>
+        #result { border-bottom:1px solid #ccc; padding:10px 10px; font-family:courier; font-size:60px; width:100%; height:auto; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+        </style>
+        <link rel="stylesheet" href="../js/details.css" type="text/css" />
+</head><body>
+    <h1>获取免登授权码</h1>
+
+    <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+    <script>
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+
+    YYEsnBridge.ready(function() {})
+
+    var completeFunction = function(res) {
+        console.log('complete data:' + res);
+    }
+    var successFunction = function(res) {
+        console.log('success data:' + res);
+        var resultLabel = document.getElementById('result');
+        resultLabel.innerHTML = "授权码：" + res.OAuthCode;
+    }
+    var failFunction = function(res) {
+        console.log('fail data:' + res);
+    }
+
+    function getOAuthCode(e) {
+        var tenantIdValue = document.getElementById('tenantId').value;
+        var data = {
+            tenantId: tenantIdValue,
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('getOAuthCode', data)
+    }
+
+        </script>
+    <div>
+        <label style="font-size:40px;">租户ID:</label>
+        <input type="text" id='tenantId' placeholder="租户id 默认为当前租户"><br>
+    </div>
+    <div>
+        <button onclick="getOAuthCode(this)">获取免登授权码</button><br>
+    </div>
+    <div>
+        <p id="result"></p>
+    </div>
+</body></html>

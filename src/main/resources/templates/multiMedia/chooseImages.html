@@ -1,0 +1,154 @@
+<!doctype html>
+<html><head>
+    <title>选取图片</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type='text/css'>
+        #result {margin:50px 50px 50px 50px; height:auto;}
+        .myRadio {height:50px;width:50px;vertical-align:middle;}
+        .myLabel{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+        .text_input {padding:10px 10px; font-family:courier; font-size:40px; width:auto; height:50px ; word-wrap:break-word;word-break:break-all;vertical-align:middle;}
+        .ps {font-size:40px;margin:50px 50px 50px 50px;}
+        </style>
+        <link rel="stylesheet" href="../js/details.css" type="text/css" />
+</head><body>
+    <h1>选取图片</h1>
+
+    <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+    <script>
+        var selectMode;
+        var returnThumbMode;
+
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+
+    YYEsnBridge.ready(function() {});
+
+    var completeFunction = function(res) {
+        console.log('complete data:' + res);
+    }
+
+    var successFunction = function(res) {
+        console.log('success data:' + res);
+        var jsonStr = document.getElementById('jsonStr');
+        jsonStr.innerHTML = JSON.stringify(res);
+    }
+
+    var failFunction = function(res) {
+        console.log('fail data:' + res);
+    }
+
+    function selectImageMode(value) {
+        selectMode = value;
+    }
+    
+    function selectThumbMode(value) {
+        returnThumbMode = value;
+    }
+
+    function chooseImages(e) {
+        var sourceType = [];
+        if (selectMode != 'all') {
+            sourceType = [selectMode];
+        }
+        
+        var returnThumb = false;
+        if (returnThumbMode == 'true'){
+            returnThumb = true;
+        }
+
+        var userInput = document.getElementById('user_input');
+        var count = 9;
+        if (userInput.value.length > 0) {
+            count =  parseInt(userInput.value);
+        }
+        
+        var printText = document.getElementById('print_text').value;
+        var printFont = document.getElementById('print_font').value;
+        var printPosition = document.getElementById('print_position').value;
+        var printColor = document.getElementById('print_color').value;
+        var printAlpha = document.getElementById('print_alpha').value;
+        
+        var watermark = new WaterMark();
+        if (printText.length > 0) {
+            watermark.text = printText;
+        }
+        if (printFont.length > 0) {
+            watermark.font = parseInt(printFont);
+        }
+        if (printPosition.length > 0) {
+            watermark.position = parseInt(printPosition);
+        }
+        if (printColor.length > 0) {
+            watermark.color = printColor;
+        }
+        if (printAlpha.length > 0) {
+            watermark.alpha = parseFloat(printAlpha);
+        }
+        
+        var data = {
+            returnThumbnail:returnThumb,
+            sourceType:sourceType,
+            count:count,
+            watermark:watermark,
+            success:successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('chooseImages', data)
+    }
+    
+    function WaterMark(){};
+
+        </script>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectMode" onclick="selectImageMode(this.value)"
+        value="all" /><label class='myLabel'>选择模式</label>
+    </div>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectMode" onclick="selectImageMode(this.value)"
+        value="album" /><label class='myLabel'>相册模式</label>
+    </div>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectMode" onclick="selectImageMode(this.value)"
+        value="camera" /><label class='myLabel'>拍摄模式</label>
+    </div>
+    <div>
+        <label class='myLabel'>最大数量：</label><input class='text_input' type="text" id="user_input" value="9"><br>
+            </div>
+    <br>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="returnThumbMode" onclick="selectThumbMode(this.value)"
+        value="true" /><label class='myLabel'>有缩略图</label>
+    </div>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="returnThumbMode" onclick="selectThumbMode(this.value)"
+        value="false" /><label class='myLabel'>无缩略图</label>
+    </div>
+    <br>
+    <div>
+        <label class='myLabel'>水印文字（8个文字以内）：</label><input class='text_input' type="text" id="print_text" value="Yonyou"><br>
+            </div>
+    <br>
+    <div>
+        <label class='myLabel'>水印字体（0-正常;1-大;2-小）：</label><input class='text_input' type="text" id="print_font" value="1"><br>
+            </div>
+    <br>
+    <div>
+        <label class='myLabel'>水印位置（0-正下方;1-正上方;2-正左方;3-正右方;4-左上方;5-左下方;6-右上方;7-右下方;）：</label><input type="text" class='text_input' id="print_position" value="7"><br>
+            </div>
+    <br>
+    <div>
+        <label class='myLabel'>水印颜色（例如：#FFFFFF）：</label><input class='text_input' type="text" id="print_color" value="#FF00FF"><br>
+            </div>
+    <br>
+    <div>
+        <label class='myLabel'>水印透明度（0-1小数）：</label><input class='text_input' type="text" id="print_alpha" value="0.9"><br>
+            </div>
+    <br>
+    <div>
+        <button onclick="chooseImages(this)">选取图片</button><br>
+    </div>
+    <textarea class="ps" id="jsonStr" cols="40">
+    </textarea>
+</body></html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+<style type='text/css'>
+    #groupidDesc {margin:50px 10px 50px 10px; font-size:30px; }
+    #groupNameDesc {margin:50px 10px 50px 10px; font-size:30px; }
+    #groupid {padding:10px 10px;font-size:50px; width:95%; height:50px ; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+    #groupname {padding:10px 10px;font-size:50px; width:95%; height:50px ; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+</style>
+<link rel="stylesheet" href="../js/details.css" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>新建发言</title>
+</head><body>
+<h1>新建发言</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+
+	YYEsnBridge.ready(function() {});
+
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + JSON.stringify(res));
+	}
+
+	var successFunction = function(res) {
+		console.log('success data:' + JSON.stringify(res));
+	}
+
+	var failFunction = function(res) {
+		console.log("fail data:" + JSON.stringify(res));
+	}
+
+	function createFeedComponent(e) {
+        var textGroupID = document.getElementById('groupid');
+        var textGroupName = document.getElementById('groupname');
+        var strGroupid = '';
+        var strGroupname = '';
+        if (textGroupID.value.length > 0) {
+            strGroupid = textGroupID.value;
+        }
+        if (textGroupName.value.length > 0) {
+            strGroupname = textGroupName.value;
+        }
+		var data = {
+            groupId:strGroupid,
+            groupName:strGroupname,
+			success:successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		YYEsnBridge.do('createFeedComponent', data)	
+	}
+
+</script>
+
+<div id="groupidDesc"> 限制可见的内部群ID: <br> </div>
+<input type="text" id = "groupid" value=""> <br>
+<div id="groupNameDesc"> 限制可见的内部群名称: <br> </div>
+<input type="text" id="groupname" value=""> <br><br><br><br>
+
+<div id='buttons'>
+	<button onclick="createFeedComponent(this)">新建发言</button><br>
+</div>
+
+</body>
+</html>

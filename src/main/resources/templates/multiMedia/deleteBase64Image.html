@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="../js/details.css" type="text/css" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type='text/css'>
+			#result {
+				margin: 50px 50px 50px 50px;
+				height: auto;
+			}
+			 #storageKey {margin:50px 10px 50px 10px; font-size:40px; }
+    #storageData {margin:50px 10px 50px 10px; font-size:40px; }
+    #storageKeyId {padding:10px 10px;font-size:40px; width:95%; height:100px ; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+    #storageDataId {padding:10px 10px;font-size:40px; width:95%; height:100px ; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+		</style>
+		<title>删除本地的base64图片</title>
+	</head>
+	<body>
+		<h1>删除本地的base64图片</h1>
+
+		<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+		<script>
+			window.onerror = function(err) {
+				console.log('window.onerror: ' + err)
+			}
+
+			function log(name, obj) {
+				console.log(name + " == " + obj);
+			}
+
+			var uniqueId = 1
+			YYEsnBridge.ready(function() {})
+			var completeFunction = function(res) {}
+			var successFunction = function(res) {
+				alert('删除成功');
+			}
+			var failFunction = function(res) {
+				console.log("fail data:" + res);
+				alert('fail result:' + JSON.stringify(res));
+			}
+			function getBase64Image(e) {
+
+		var storageKeyId = document.getElementById('storageKeyId');
+        var strKey = '';
+        if (storageKeyId.value.length > 0) {
+            strKey = storageKeyId.value;
+        }
+
+		var data = {
+			'name':strKey,
+      		success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		log('JS sending message', data)
+		YYEsnBridge.do('deleteBase64Image', data)
+	}
+		</script>
+		<div id="storageKey"> 图片的名字: <br> </div>
+		<input type="text" id = "storageKeyId" value=""> <br>
+		<div id='buttons'>
+			<button onclick="getBase64Image(this)">删除本地的base64图片</button><br><br>
+		</div>
+
+		<div>
+			<img id="result" src="" alt=""></img>
+		</div>
+	</body>
+</html>

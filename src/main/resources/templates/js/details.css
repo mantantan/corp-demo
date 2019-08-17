@@ -1,0 +1,41 @@
+html{
+  font-family:Helvetica;
+  color:#222;
+  text-align:center
+}
+h1 { color:#1E90FF; font-size:50px; margin-top:100px; }
+div p  h1{
+  font-size: 100px;
+}
+button { /* 按钮美化 */
+  width: 40%; /* 宽度 */
+  height: 100px; /* 高度 */
+  border-width: 0px; /* 边框宽度 */
+  border-radius: 3px; /* 边框半径 */
+  background: #1E90FF; /* 背景颜色 */
+  cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+  outline: none; /* 不显示轮廓线 */
+  font-family: Microsoft YaHei; /* 设置字体 */
+  color: white; /* 字体颜色 */
+  font-size: 40px; /* 字体大小 */
+  align-self: center;
+  text-align:center;
+  margin: 20px;
+}
+button:hover { /* 鼠标移入按钮范围时改变颜色 */
+  background: #5599FF;
+}
+.logLine { border-bottom:1px solid #ccc; padding:4px 2px; font-family:courier; font-size:11px; }
+#result {border-bottom:1px solid #ccc; padding:10px 10px; font-family:courier; font-size:60px; width:100%; height:auto; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+.user_input {padding:10px 10px; font-family:courier; font-size:40px; width:100%; height:auto ; word-wrap:break-word;word-break:break-all;overflow: hidden; margin-top:20px;}
+input {
+  margin: 8px 0;
+  display: inline-block;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  padding:10px 10px;
+  font-size:40px;
+  width:95%;
+  height:100px;
+  box-sizing: border-box;
+}

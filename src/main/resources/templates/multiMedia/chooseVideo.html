@@ -1,0 +1,73 @@
+<!doctype html>
+<html><head>
+    <title>选取视频</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type='text/css'>
+        #result {width:100%; height:auto; overflow: hidden;}
+        .myRadio {height:50px;width:50px;vertical-align:middle;}
+        .myLabel{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+        </style>
+        <link rel="stylesheet" href="../js/details.css" type="text/css" />
+</head><body>
+    <h1>选取视频</h1>
+
+    <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+    <script>
+        var selectMode;
+
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+
+    YYEsnBridge.ready(function() {});
+
+    var completeFunction = function(res) {
+        console.log('complete data:' + res);
+    }
+    var successFunction = function(res) {
+        console.log('success data:' + res);
+        var jsonData = document.getElementById('jsonStr');
+        jsonData.innerHTML = JSON.stringify(res);
+    }
+    var failFunction = function(res) {
+        console.log('fail data:' + res);
+    }
+
+    function selectVideoMode(value) {
+        selectMode = value;
+    }
+
+    function chooseVideo(e) {
+        var sourceType = [];
+        if (selectMode != 'all') {
+            sourceType = [selectMode];
+        }
+
+        var data = {
+            sourceType:sourceType,
+            maxDuration:5,
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('chooseVideo', data)
+    }
+
+        </script>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectMode" onclick="selectVideoMode(this.value)"
+        value="all" /><label class='myLabel'>选择模式</label>
+    </div>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectMode" onclick="selectVideoMode(this.value)"
+        value="album" /><label class='myLabel'>相册模式</label>
+    </div>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectMode" onclick="selectVideoMode(this.value)"
+        value="camera" /><label class='myLabel'>拍摄模式</label>
+    </div>
+    <div>
+        <button onclick="chooseVideo(this)">选取视频</button><br>
+    </div>
+    <textarea class="ps" id="jsonStr" cols="80" rows="50"></textarea>
+</body></html>

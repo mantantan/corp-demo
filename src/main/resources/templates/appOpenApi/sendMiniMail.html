@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="../js/details.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>发送微邮</title>
+</head>
+<body>
+<h1>发送微邮</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {});
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+
+	var successFunction = function(res) {
+		console.log("success data:" + res);
+	}
+
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+		alert(JSON.stringify(res));
+	}
+
+	function sendMiniMail(e){
+	    var data = {
+             users:[{
+                "avatar": "",
+                "uid": "3274608",
+                "mobile": "",
+                "name": "就能看到"
+                },
+                {
+                "avatar": "http://ykj-esn-test.oss-cn-beijing.aliyuncs.com/default_avatar.jpg",
+                "uid": "3256023",
+                "mobile": "18201538683",
+                "name": "猪大仙"
+                }, {
+                "avatar ": "http: //ykj-esn-test.oss-cn-beijing.aliyuncs.com/default_avatar.jpg",
+                "uid": "3260737",
+                "mobile": "15801681634",
+                "name": "刘小猪"
+                }
+            ],
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction};
+        console.log('JS sending message', data)
+		YYEsnBridge.do('sendMiniMail', data)
+	}
+</script>
+
+<div id='buttons'>
+    <button onclick="sendMiniMail(this)">发送微邮</button>
+    <br>
+</div>
+<div>
+    <p id="result"></p>
+</div>
+
+<div id='log'>
+</div>
+</body>
+</html>

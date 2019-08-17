@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="../js/details.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>监听截屏</title>
+</head>
+<body>
+<h1>监听截屏</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {
+		// 页面初始化时就需要执行的JSAPI放到这里
+		YYEsnBridge.registerHandler({
+			'onUserCaptureScreen' : function(data, callback){
+				alert("截屏成功");
+				console.log('onUserCaptureScreen has been called');
+			}
+		});
+	})
+
+    var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+
+	var successFunction = function(res) {
+        console.log("success data:" + res);
+	}
+
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+		alert(JSON.stringify(res));
+	}
+
+    function onUserCaptureScreen(e){
+	    var data = {
+	        callback:"onUserCaptureScreen",
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('onUserCaptureScreen', data)
+	}
+
+</script>
+
+<div id='buttons'>
+    <button onclick="onUserCaptureScreen(this)">开始监听截屏</button>
+    <br>
+</div>
+<div>
+    <p id="result"></p>
+</div>
+
+<div id='log'>
+</div>
+</body>
+</html>

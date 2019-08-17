@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>免登演示</title>
+</head>
+<body>
+<h1>自建应用免登-用户信息</h1>
+
+
+<div style="border: 1px solid red; padding: 10px;">
+    <label>友户通主键：</label> <span th:text="${yhtUserId}"></span><br/>
+    <label>租户主键：</label><span th:text="${tenantId}"></span><br/>
+    <label>友空间用户id：</label><span th:text="${memberId}"></span><br/>
+    <label>友空间用户id：</label><span th:text="${qzId}"></span><br/>
+    <label>当前用户名：</label><span th:text="${name}"></span><br/>
+    <label>用户手机号：</label><span th:text="${mobile}"></span><br/>
+    <label>用户邮箱：</label><span th:text="${email}"></span><br/>
+</div>
+
+</body>
+</html>

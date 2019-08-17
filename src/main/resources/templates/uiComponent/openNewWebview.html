@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+  <link rel="stylesheet" href="../js/details.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>打开网页</title>
+</head>
+<body>
+<h1>打开网页</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {})
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+
+	var successFunction = function(res) {
+		console.log("success data:" + res);
+	}
+
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+		alert(JSON.stringify(res));
+	}
+
+	function openNewWebview(e){
+		var data = {
+	        url:'http://www.baidu.com',
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('openNewWebview', data)
+	}
+</script>
+<div id='buttons'>
+    <button onclick="openNewWebview(this)">打开网页</button>
+    <br>
+</div>
+
+<div id='log'>
+
+</div>
+</body>
+</html>

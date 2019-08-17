@@ -1,0 +1,68 @@
+<!doctype html>
+<html><head>
+	<link rel="stylesheet" href="../js/details.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>选择城市</title>
+</head><body>
+<h1>选择城市</h1>
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {})
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+
+	var successFunction = function(res) {
+		alert(JSON.stringify(res));
+		var resultLabel = document.getElementById('result');
+		resultLabel.innerHTML = "已选择：" + res.province + res.city;
+	}
+
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+		alert(JSON.stringify(res));
+	}
+
+	function chooseCity(e) {
+		var data = {
+			title: '城市选择',
+      		province:'山东省',
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('chooseCity', data)
+	}
+
+</script>
+
+<div id='buttons'>
+	<button onclick="chooseCity(this)">选择城市</button><br>
+</div>
+<div>
+  <p id="result"></p>
+</div>
+
+<div id='log'>
+</div>
+</body></html>

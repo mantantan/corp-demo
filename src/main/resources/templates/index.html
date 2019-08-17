@@ -1,0 +1,203 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>友空间对外开放能力Demo</title>
+    <link rel="stylesheet" type="text/css" href="js/iview.css">
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/iview.min.js"></script>
+    <script type="text/javascript" src="js/esn.min.js"></script>
+</head>
+<body>
+<div id="app" style="margin:10% 10% 10% 10%;">
+  <Row>
+      <i-col span="11">
+        <Card  v-on:click.native="jumppage('freeLogin')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/free_login.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">免登</div>
+          </div>
+        </Card>
+      </i-col>
+      <i-col span="11" offset="2">
+        <Card v-on:click.native="jumppage('multiMedia')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/multi_media.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">多媒体</div>
+          </div>
+        </Card>
+    </i-col>
+  </Row>
+  <br>
+  <Row>
+      <i-col span="11">
+        <Card v-on:click.native="jumppage('file')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/file.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">文件</div>
+          </div>
+        </Card>
+      </i-col>
+      <i-col span="11" offset="2">
+        <Card v-on:click.native="jumppage('uiComponent')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/ui_components.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">界面组件</div>
+          </div>
+        </Card>
+    </i-col>
+  </Row>
+  <br>
+  <Row>
+      <i-col span="11">
+        <Card v-on:click.native="jumppage('reference')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/reference.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">参照</div>
+          </div>
+        </Card>
+      </i-col>
+      <i-col span="11" offset="2">
+        <Card v-on:click.native="jumppage('mobileAbility')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/mobile_ability.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">移动设备能力</div>
+          </div>
+        </Card>
+    </i-col>
+  </Row>
+  <br>
+  <Row>
+      <i-col span="11">
+        <Card v-on:click.native="jumppage('safety')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/safe.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">安全</div>
+          </div>
+        </Card>
+      </i-col>
+      <i-col span="11" offset="2">
+        <Card v-on:click.native="jumppage('qrcode')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/scan_code.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">扫码</div>
+          </div>
+        </Card>
+    </i-col>
+  </Row>
+  <br>
+  <Row>
+      <i-col span="11">
+        <Card v-on:click.native="jumppage('userInteraction')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/user_interaction.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">用户交互行为反馈</div>
+          </div>
+        </Card>
+      </i-col>
+      <i-col span="11" offset="2">
+        <Card v-on:click.native="jumppage('share')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/share.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">分享</div>
+          </div>
+        </Card>
+    </i-col>
+  </Row>
+  <br>
+  <Row>
+      <i-col span="11">
+        <Card v-on:click.native="jumppage('appOpenApi')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/appOpenApi.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">应用开放接口</div>
+          </div>
+        </Card>
+      </i-col>
+      <i-col span="11" offset="2">
+        <Card v-on:click.native="jumppage('AiAbility')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/AiAbility.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">AI能力</div>
+          </div>
+        </Card>
+    </i-col>
+  </Row>
+  <br>
+  <Row>
+      <i-col span="11">
+        <Card v-on:click.native="jumppage('network')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/network.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">网络能力</div>
+          </div>
+        </Card>
+      </i-col>
+      <i-col span="11" offset="2">
+        <Card v-on:click.native="jumppage('dataProcessing')">
+          <div style="text-align:center;margin-top:30px; margin-bottom:30px;">
+            <img src="img/dataProcessing.png"
+              style="width:100px;height:100px;margin-bottom:30px;">
+            <div style="font-size:40px; font-weight:bold;">数据处理能力</div>
+          </div>
+        </Card>
+    </i-col>
+  </Row>
+  <br>
+    <!-- <i-button @click="show">Click me!</i-button>
+    <Modal v-model="visible" title="Welcome">Welcome to iView</Modal> -->
+</div>
+<div id="configId" style="position:fixed;right:10px;bottom: 10px; font-size:20px;bold;">
+	<div style="width:100px;height:100px;background-color:#cccccc;border-radius:50%;text-align:center;padding:20% 20%;">
+    <p style="text-align:center;">JSAPI</p>
+    <p style="text-align:center;">授权</p>
+  </div>
+</div>
+<script>
+
+    console.log("---agentId---",'[[${agentId}]]');
+    console.log("---signature---",'[[${signature}]]');
+    console.log("---timeStamp---",'[[${timeStamp}]]');
+    <!--JSAPI鉴权参数-->
+    YYEsnBridge.ready(function (){
+        YYEsnBridge.config({
+            agentId: "[[${agentId}]]",
+            signature: "[[${signature}]]",
+            timeStamp: "[[${timeStamp}]]"
+        });
+    });
+
+    new Vue({
+        el: '#app',
+        data: {
+            visible: false
+        },
+        methods: {
+            show: function () {
+                this.visible = true;
+            },
+            jumppage: function(type) {
+                window.location.href = "functionList.html?type=" + type;
+            },
+        }
+    })
+
+    var configId = document.getElementById("configId");
+    configId.onclick = function(){
+        window.location.href = "reference/config.html";
+    }
+  </script>
+</body>
+</html>

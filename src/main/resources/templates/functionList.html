@@ -1,0 +1,525 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>友空间对外开放能力-功能列表</title>
+    <link rel="stylesheet" type="text/css" href="js/iview.css">
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/iview.min.js"></script>
+    <style>
+
+    .ivu-table th{
+      font-size:45px;
+      height:100px;
+    }
+    .ivu-table td{
+      font-size:45px;
+      height:130px;
+    }
+    </style>
+
+</head>
+<body>
+<div id="app" style="margin: 2% 2% 2% 2%;">
+  <i-table stripe border :columns="columns1" :data="columnData" @on-row-click="jumppage" height="2000"></i-table>
+    <!-- <i-button @click="selectData">Click me!</i-button>
+    <Modal v-model="visible" title="Welcome">功能列表</Modal> -->
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            visible: false,
+            columns1: [
+                    {
+                        title: 'Id',
+                        key: 'id'
+                    },
+                    {
+                        title: '能力',
+                        key: 'ability'
+                    },
+
+                ],
+                columnData: [],
+                freeLoginData: [
+                    {
+                        id: 'getOAuthCode',
+                        ability: '获取免登授权码',
+                        desc: '获取免登授权码，实现单点登录'
+                    }
+                ],
+                multiMediaData: [
+                    {
+                        id: 'chooseImages',
+                        ability: '选取图片',
+                        desc: '从本地相册选择图片或使用相机拍照，并返回图片文件信息'
+                    },
+                    {
+                        id: 'chooseVideo',
+                        ability: '选取视频',
+                        desc: '提供相册的视频选取功能，或者使用相机录像，返回视频文件信息'
+                    },
+                    {
+                        id: 'chooseImageToServer',
+                        ability: '选取图片并上传友空间服务器',
+                        desc: '从本地相册选择图片或使用相机拍照，并把文件上传到友空间服务器，返回视频链接地址和信息'
+                    },
+                    {
+                        id: 'chooseVideoToServer',
+                        ability: '选取视频并上传友空间服务器',
+                        desc: '提供相册的视频选取功能，或者使用相机录像，并将视频文件上传到友空间服务器，返回视频链接地址和信息'
+                    },
+                    {
+                        id: 'saveImageToPhotoAlbum',
+                        ability: '保存图片到相册',
+                        desc: '将图片保存到手机的相册中'
+                    },
+                    {
+                        id: 'recordAudio',
+                        ability: '录音',
+                        desc: '提供录音界面以及功能，支持最长60s录音，返回经过BASE64加密处理后的音频数据字符串'
+                    },
+                    {
+                        id: 'scanUrlImages',
+                        ability: '图片预览',
+                        desc: '图片预览组件，可传入多张图片地址以及当前预览图片的索引，实现图片的多张图片左右连续浏览，支持图片放大缩小功能'
+                    },
+					{
+					    id: 'saveImageToLocal',
+					    ability: '保存图片到本地',
+					    desc: '将服务器的图片数据存储到本地'
+					},
+					{
+					    id: 'loadImageFromLocal',
+					    ability: '从本地读取图片',
+					    desc: '读取本地已保存的数据，以BASE64流的形式返回'
+					},
+                    {
+                         id: 'compressLocalImage',
+                         ability: '压缩本地图片',
+                         desc: '压缩本地图片，返回新图片路径或BASE64数据'
+                    },
+                    {
+                         id: 'saveBase64Image',
+                         ability: '存储图片base64',
+                         desc: '获取本地的图片base64字符串'
+                    },
+                    {
+                         id: 'getBase64Image',
+                         ability: '获取图片base64',
+                         desc: '保存图片base64字符串到本地'
+                    },
+                    {
+                         id: 'deleteBase64Image',
+                         ability: '删除图片base64',
+                         desc: '删除本地base64图片'
+                    },
+                ],
+                fileData: [
+                    {
+                        id: 'chooseLocalFiles',
+                        ability: '选取本地文件',
+                        desc: '选取本地文件，并返回文件本地路径，仅支持android'
+                    },
+                    {
+                        id: 'chooseLocalFileToServer',
+                        ability: '选取本地文件并上传友空间服务器',
+                        desc: '选取本地文件，上传到友空间服务器，并返回文件名称、路径、类型等信息。仅支持android，最大可选数为5，所选文件不大于100MB、且不能为空'
+                    },
+                    {
+                        id: 'previewDoc',
+                        ability: '文件预览',
+                        desc: '传入文件ID或url、文件名称、来源类型等，实现对应文件的预览以及下载'
+                    },
+                ],
+                uiComponentData: [
+                    {
+                        id: 'settingNavBar',
+                        ability: '导航栏配置',
+                        desc: '配置移动端导航栏样式，设置导航栏的背景颜色、导航栏底部线是否显示、设置标题、设置标题颜色和按钮颜色、设置状态栏样式、设置导航栏左侧按钮和右侧按钮'
+                    },
+                    {
+                        id: 'showToast',
+                        ability: '信息提示窗',
+                        desc: '弹出信息提示窗，传入标题和提示语，提示完成后自动消失'
+                    },
+                    {
+                        id: 'showAlert',
+                        ability: '警告窗',
+                        desc: '弹出alter样式的警告窗，自定义标题和提示语，点击确定或取消后消失，返回不同的操作码'
+                    },
+                    {
+                        id: 'commonReplyComponent',
+                        ability: '通用评论组件',
+                        desc: '提供通用评论界面，可输入文字、语音、图片，评论完成后，数据上传到服务器，返回文字、语音图片等附件的ID和地址'
+                    },
+                    {
+                        id: 'closeCurrentWebview',
+                        ability: '关闭当前浏览器窗体',
+                        desc: '关闭当前的浏览器窗体'
+                    },
+                     {
+                        id: 'openNewWebview',
+                        ability: '打开新的浏览器窗体',
+                        desc: '在当前界面打开一个新的浏览器窗体'
+                    },
+                     {
+                        id: 'configureWebView',
+                        ability: 'webView配置',
+                        desc: '配置webView下拉刷新，上拉加载能力'
+                    }
+                ],
+                referenceData: [
+                    {
+                        id: 'datetimePicker',
+                        ability: '日期选取组件',
+                        desc: '传入初始选择的日期时间（默认当前时间），选择完成后，选择日期以时间戳的格式返回'
+                    },
+                    {
+                        id: 'chooseCity',
+                        ability: '选择城市',
+                        desc: '展示中国城市列表，可传入指定省份和城市，选择完成后返回省份和城市'
+                    },
+                ],
+                mobileAbilityData: [
+                    {
+                        id: 'onNetworkStatusChange',
+                        ability: '监听网络状态变化',
+                        desc: '监听手机网络情况变化（轻应用注册事件）'
+                    },
+                    {
+                        id: 'watchShake',
+                        ability: '监听摇一摇',
+                        desc: '监控手机摇一摇（轻应用注册事件）'
+                    },
+                    {
+                        id: 'getNetType',
+                        ability: '获取网络类型',
+                        desc: '获取当前网络类型'
+                    },
+                    {
+                        id: 'getLocationInfo',
+                        ability: '获取当前地理位置',
+                        desc: '获取当前的地理位置，国内使用高德坐标系，国外使用WGS-84坐标系'
+                    },
+                    {
+                        id: 'getSystemInfo',
+                        ability: '获取系统信息',
+                        desc: '获取系统信息，屏幕高度、屏幕宽度、设备像素屏幕高度比、友空间当前设置的语言'
+                    },
+                    {
+                        id: 'vibrateOnce',
+                        ability: '震动',
+                        desc: '使手机震动一次'
+                    },
+                    {
+                        id: 'screenShot',
+                        ability: '截屏',
+                        desc: '对当前屏幕进行截屏, 将截屏图片转换为base64字符串返回'
+                    },
+                      {
+                        id: 'onUserCaptureScreen',
+                        ability: '用户截屏事件',
+                        desc: '监听用户主动截屏事件，用户使用系统截屏按键截屏时触发。'
+                    },
+                    {
+                        id: 'chooseMap',
+                        ability: '地图位置选取',
+                        desc: '提供地图选取附近的地点列表页面，供用户选择'
+                    },
+                    {
+                        id: 'getAuthorizationStatus',
+                        ability: '获取授权状态',
+                        desc: '提供相机、相册、通讯录等授权状态'
+                    },
+                    {
+                    id: 'callPhone',
+                    ability: '拨打电话',
+                    desc: '拨打电话'
+                    },
+                    {
+                    id: 'changeScreenOrientation',
+                    ability: '强制横竖屏',
+                    desc: '强制横竖屏'
+                    },
+					{
+					id: 'markAndNavigationDestination',
+					ability: '地图打点以及导航',
+					desc: '地图打点以及导航'
+					},
+					{
+					id: 'createShortcut',
+					ability: '创建桌面快捷方式',
+					desc: '创建桌面快捷方式'
+					},
+					{
+					id: 'backIntercept',
+					ability: '拦截窗口的返回事件',
+					desc: '拦截窗口的返回事件'
+					},
+					{
+					    id: 'blueToothPrint',
+					    ability: '蓝牙打印机相关功能',
+					    desc: '包括蓝牙打印机相关功能：检查蓝牙状态、扫描蓝牙设备、连接蓝牙设备、打印等全部功能'
+					},
+                ],
+                safetyData: [
+                    {
+                        id: 'encryptData',
+                        ability: '信息加密',
+                        desc: '将传入数据采用加密算法加密后返回'
+                    },
+                    {
+                        id: 'decryptData',
+                        ability: '信息解密',
+                        desc: '将传入数据采用对应解密算法解密后返回'
+                    },
+                ],
+                qrcodeData: [
+                    {
+                        id: 'QRCodeScan',
+                        ability: '二维码扫描',
+                        desc: '调用扫一扫功能，支持返回扫描出的二维码内容和跳转到指定网页两种模式'
+                    },
+                    {
+                        id: 'scanBarcode',
+                        ability: '条码扫描',
+                        desc: '调用扫一扫功能，返回扫描出的条码内容'
+                    },
+                    {
+                        id: 'customScanQRCode',
+                        ability: '自定义扫描',
+                        desc: '调用扫一扫功能，对二维码或者条码进行扫描，可定制扫描框的位置和大小。'
+                    },
+                ],
+                userInteractionData: [
+                    {
+                        id: 'onPullDownHandle',
+                        ability: '浏览器窗体顶部下拉',
+                        desc: '浏览器顶部下拉事件回调'
+                    },
+                    {
+                        id: 'onPullUpHandle',
+                        ability: '浏览器窗体底部上拉',
+                        desc: '浏览器底部上拉事件回调'
+                    },
+                ],
+                shareData: [
+                    {
+                        id: 'shareWithType',
+                        ability: '自定义分享',
+                        desc: '自定义分享，不提供页面组件，支持将特定信息分享到不同平台，包括友空间消息、友空间动态、微信、QQ'
+                    },
+                    {
+                        id: 'showShareMenu',
+                        ability: '分享组件',
+                        desc: '提供分享页面组件，支持将特定信息分享到不同平台，包括友空间消息、友空间动态、微信、QQ'
+                    },
+                ],
+                appOpenApiData: [
+                    {
+                        id: 'viewUserInfo',
+                        ability: '查看人员信息',
+                        desc: '打开人员详情界面。'
+                    },
+                    {
+                        id: 'chooseDepartment',
+                        ability: '选择部门',
+                        desc: '选择部门，返回部门基础信息。'
+                    },
+                    {
+                        id: 'chooseContacts',
+                        ability: '选择联系人（不跨空间）',
+                        desc: '不跨空间选择联系人，返回联系人基础信息。'
+                    },
+                    {
+                        id: 'chooseAllContacts',
+                        ability: '选择联系人（跨空间）',
+                        desc: '跨空间选择联系人，返回联系人基础信息。'
+                    },
+                    {
+                        id: 'chooseInsideGroup',
+                        ability: '选择内部群',
+                        desc: '选择内部群，返回内部群信息。'
+                    },
+                    {
+                        id: 'sendMiniMail',
+                        ability: '新建微邮',
+                        desc: '打开新建微邮界面'
+                    },
+                    {
+                        id: 'openChatByUserId',
+                        ability: '发起单聊会话',
+                        desc: '直接发起和特定人员的单聊会话'
+                    },
+                     {
+                     id: 'sendImageMessages',
+                     ability: '发送图片消息',
+                     desc: '向指定的个人或者群组发送图片消息。'
+                     },
+                    {
+                        id: 'createFeedComponent',
+                        ability: '新建发言',
+                        desc: '打开新建发言界面'
+                    },
+                    {
+                        id: 'createNewSchedule',
+                        ability: '新建日程',
+                        desc: '提供一个新建日程的功能，调用时端上会打开新建日程页面。用户可以在此完善日程信息，并新建日程。'
+                    },
+                    {
+                        id: 'viewScheduleList',
+                        ability: '查看日程列表',
+                        desc: '提供一个查询列表页面，根据传入的时间，展示指定日期的日程信息'
+                    },
+                    {
+                        id: 'viewScheduleDetail',
+                        ability: '打开日程详情',
+                        desc: '提供一个日程详情页面，根据传入的日程id以及用户id，展示出指定日程的详细信息'
+                     },
+                    {
+                        id: 'chooseLibraryFiles',
+                        ability: '选择文库文件',
+                        desc: '从文库列表中选择文库文件，返回文件基础信息。注：文件下载URL和预览URL要通过接口单独获取。预览URL有code失效值。下载URL中添加了密钥。'
+                     },
+                     {
+                        id: 'openLibraryFiles',
+                        ability: '打开文库具体路径',
+                        desc: '打开文库具体路径。'
+                     },
+                     {
+                     id: 'getUserYHTInfo',
+                     ability: '获取个人友互通信息',
+                     desc: '获取个人友互通信息'
+                     },
+                ],
+                AiAbilityData: [
+                    {
+                        id: 'voiceToText',
+                        ability: '语音转文字',
+                        desc: '提供实时语音转文字的功能,并且提供了一个交互界面。结束调用后会返回相应转换完成的文字'
+                    },
+                    {
+                        id: 'faceDetect',
+                        ability: '人脸识别',
+                        desc: '提供当前采集到的人脸与当前账号录入的人脸进行识别的功能，返回对比分数以及微笑值（可选）。'
+                    },
+					{
+					    id: 'smileDetect',
+					    ability: '微笑检测',
+					    desc: '提供检测目标微笑值的功能。'
+					},
+					{
+					    id: 'faceCompare',
+					    ability: '人脸比对',
+					    desc: '提供当前采集的面部信息与人脸库内的面部信息进行比对，返回匹配的用户id和分数，以及微笑值（可选）。'
+					},
+					{
+					    id: 'faceCollect',
+					    ability: '人脸采集',
+					    desc: '采集当前面部并与当前登录户绑定。'
+					},
+                ],
+                networkData: [
+                    {
+                        id: 'httpRequest',
+                        ability: '发起请求',
+                        desc: '提供通过端上发起post以及get请求功能。'
+                    },
+					{
+					    id: 'downloadFile',
+					    ability: '下载文件',
+					    desc: '将文件下载到本地，并返回本地存储地址'
+					},
+					{
+					    id: 'uploadFile',
+					    ability: '文件上传',
+					    desc: '将本地文件上传到指定服务器'
+					},
+                ],
+                dataProcessingData: [
+                    {
+                        id: 'setStorage',
+                        ability: '数据存储',
+                        desc: '在手机端本地持久化存储数据'
+                    },
+                    {
+                        id: 'getStorage',
+                        ability: '数据读取',
+                        desc: '读取手机端本地持久化数据'
+                    },
+                    {
+                        id: 'removeStorage',
+                        ability: '删除缓存数据',
+                        desc: '删除手机端本地持久化数据'
+                    },
+                    {
+                        id: 'executeDBOperate',
+                        ability: '数据库增删改查操作',
+                        desc: 'DB增删改查、建表、删表能力'
+                    },
+                ],
+        },
+        mounted: function() {
+          this.selectData();
+        },
+        methods: {
+            show: function () {
+                this.visible = true;
+            },
+            jumppage: function(rowData) {
+                var dataType = this.getQueryVariable('type');
+                //window.open(dataType + '/' + rowData.id + ".html");
+                 window.location.href = dataType + "/" + rowData.id + ".html";
+            },
+            getQueryVariable: function (variable) {
+               var query = window.location.search.substring(1);
+               var vars = query.split("&");
+               for (var i=0;i<vars.length;i++) {
+                       var pair = vars[i].split("=");
+                       if(pair[0] == variable){
+                        return pair[1];
+                    }
+               }
+               return(false);
+            },
+            selectData: function (variable) {
+                  var dataType = this.getQueryVariable('type');
+                  console.log('data type is:' + dataType);
+                  if (dataType == 'AiAbility') {
+                     this.columnData = this.AiAbilityData;
+                  } else if (dataType == 'appOpenApi') {
+                     this.columnData = this.appOpenApiData;
+                  } else if (dataType == 'dataProcessing') {
+                     this.columnData = this.dataProcessingData;
+                  } else if (dataType == 'file') {
+                     this.columnData = this.fileData;
+                  } else if (dataType == 'freeLogin') {
+                     this.columnData = this.freeLoginData;
+                  } else if (dataType == 'mobileAbility') {
+                     this.columnData = this.mobileAbilityData;
+                  } else if (dataType == 'multiMedia') {
+                     this.columnData = this.multiMediaData;
+                  } else if (dataType == 'network') {
+                     this.columnData = this.networkData;
+                  } else if (dataType == 'qrcode') {
+                     this.columnData = this.qrcodeData;
+                  } else if (dataType == 'reference') {
+                     this.columnData = this.referenceData;
+                  } else if (dataType == 'safety') {
+                     this.columnData = this.safetyData;
+                  } else if (dataType == 'share') {
+                     this.columnData = this.shareData;
+                  } else if (dataType == 'uiComponent') {
+                     this.columnData = this.uiComponentData;
+                  } else if (dataType == 'userInteraction') {
+                     this.columnData = this.userInteractionData;
+                  } else {
+                     this.columnData = this.appOpenApiData;
+                   }
+            }
+        }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="../js/details.css" type="text/css" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type='text/css'>
+			#result {
+				border-bottom: 1px solid #ccc;
+				padding: 10px 10px;
+				font-family: courier;
+				font-size: 60px;
+				width: 100%;
+				height: auto;
+				word-wrap: break-word;
+				word-break: break-all;
+				overflow: hidden;
+			}
+		</style>
+		<title>微笑检测</title>
+	</head>
+	<body>
+		<h1>微笑检测</h1>
+
+		<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+		<script>
+			window.onerror = function(err) {
+				console.log('window.onerror: ' + err)
+			}
+
+			function log(name, obj) {
+				console.log(name + " == " + obj);
+			}
+
+			var uniqueId = 1
+			YYEsnBridge.ready(function() {})
+
+
+			var completeFunction = function(res) {}
+			var successFunction = function(res) {
+				var resultLabel = document.getElementById('result');
+				resultLabel.innerHTML = JSON.stringify(res);
+			}
+			var failFunction = function(res) {
+				alert(JSON.stringify(res));
+			}
+
+			function smileDetect(e) {
+				var data = {
+					success: successFunction,
+					fail: failFunction,
+					complete: completeFunction
+				};
+				YYEsnBridge.do('smileDetect', data)
+			}
+		</script>
+		<div id='buttons'>
+			<button onclick="smileDetect(this)">微笑检测</button><br><br>
+		</div>
+
+		<div>
+			<p id="result"></p>
+		</div>
+	</body>
+</html>

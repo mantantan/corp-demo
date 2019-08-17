@@ -1,0 +1,40 @@
+<!doctype html>
+<html><head>
+    <title>选取联系人进行单聊会话</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../js/details.css" type="text/css" />
+</head><body>
+<h1>选取联系人进行单聊会话</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+
+    YYEsnBridge.ready(function() {});
+
+    var completeFunction = function(res) {
+        console.log("complete data:" + res);
+    }
+    var successFunction = function(res) {
+        alert(JSON.stringify(res));
+    }
+    var failFunction = function(res) {
+        console.log("fail data:" + res);
+    }
+
+    function chooseChatFromContact(e) {
+        var data = {
+            success:successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('chooseChatFromContact', data)
+    }
+
+    </script>
+<div>
+    <button onclick="chooseChatFromContact(this)">选取联系人进行单聊会话</button><br>
+</div>
+</body></html>

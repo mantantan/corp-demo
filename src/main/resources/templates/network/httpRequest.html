@@ -1,0 +1,81 @@
+<!doctype html>
+<html><head>
+	<title>发起网络请求</title>
+	<link rel="stylesheet" href="../js/details.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+<h1>发起网络请求</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {//必须调用
+		// 页面初始化时就需要执行的JSAPI放到这里
+	})
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+	var successFunction = function(res) {
+		var result = document.getElementById('result_ta');
+		result.value = JSON.stringify(res);
+	}
+	var failFunction = function(res) {
+		alert('fail result:' + JSON.stringify(res));
+	}
+
+	function httpRequest(e) {
+		var inputData = document.getElementById('input_data').value;
+		var inputMethod = document.getElementById('input_method').value;
+		var data = {
+			url: inputData,
+			method: inputMethod,
+			headers: {
+				h1:"123"
+			},
+			params: {
+				p1:"abc"
+			},
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		YYEsnBridge.do('httpRequest', data)
+	}
+
+	</script>
+<div>
+	url：<input id='input_data' type='text' value='https://ec.diwork.com/' />
+</div>
+<div>
+	method：<input id='input_method' type='text' value='GET' />
+</div>
+<div id='buttons'>
+	<button onclick="httpRequest(this)">发起网络请求</button><br>
+</div>
+
+<div id='log'>
+
+</div>
+结果：
+<div>
+	<textarea id='result_ta' style="width:100%; height:500px;overflow:scroll;" ></textarea>
+</div>
+</body></html>

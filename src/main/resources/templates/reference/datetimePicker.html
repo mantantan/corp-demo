@@ -1,0 +1,93 @@
+<!doctype html>
+<html><head>
+	  <title>日期选择组件</title>
+	<link rel="stylesheet" href="../js/details.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+<h1>日期选择组件</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+
+	YYEsnBridge.ready(function() {
+		console.log('JS got a message ready')
+		// 页面初始化时就需要执行的JSAPI放到这里
+		//YYEsnBridge.registerHandler({
+		//	'watchShake' : function(data, callback){
+		//		console.log('watchShake has been called');
+		//		alert('watch shake');
+				// 需要再回调native时调用
+				// typeof callback === 'function' && callback({name:'FromJSName'});
+		//	}
+		//});
+	})
+
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+	var successFunction = function(res) {
+		alert("picked time is:" + res.time);
+	}
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+	}
+
+	function datetimePicker(e) {
+		var data = {
+			format: 'yyyy-MM-dd',
+			currentData: '2019-03-12',
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction,
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('dateTimePicker', data)
+	}
+
+	function datetimePicker1(e) {
+		var data = {
+			format: 'yyyy-MM-dd HH:mm',
+			currentData: '2019-03-12',
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction,
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('dateTimePicker', data)
+	}
+
+	function datetimePicker2(e) {
+		var data = {
+			format: 'HH:mm',
+			currentData: '2019-03-12',
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction,
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('dateTimePicker', data)
+	}
+
+	</script>
+<div id='buttons'>
+	<button onclick="datetimePicker(this)">日期选择界面</button><br><br>
+
+	<button onclick="datetimePicker1(this)">日期时间选择界面</button><br><br>
+
+	<button onclick="datetimePicker2(this)">时间选择界面</button><br><br>
+</div>
+
+<div id='log'>
+
+</div>
+</body></html>

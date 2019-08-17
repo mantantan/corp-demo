@@ -1,0 +1,61 @@
+<!doctype html>
+<html><head>
+	<title>监听网络状态变化</title>
+	<link rel="stylesheet" href="../js/details.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+<h1>监听网络状态变化</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	YYEsnBridge.ready(function() {
+		var data = { 'Javascript Responds':'Wee!' }
+		// 页面初始化时就需要执行的JSAPI放到这里
+		YYEsnBridge.registerHandler({
+			'onNetworkStatusChange' : function(data, callback){
+				alert(data.networkType);
+			}
+		});
+	})
+
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+	var successFunction = function(res) {
+		console.log("success data:");
+	}
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+	}
+
+	function registerNetWorkChange(e) {
+		//var data = "{    'function': 'selectContacts',    'parameters': {        'app_id': '55',        'title': '微邮'    }}"
+		var data = {
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction,
+			callback: 'onNetworkStatusChange'
+		};
+		log('JS sending message', data)
+		YYEsnBridge.do('onNetworkStatusChange', data)
+	}
+
+	</script>
+<div id='buttons'>
+	<button onclick="registerNetWorkChange(this)">注册网络监听</button><br>
+</div>
+
+<div id='log'>
+
+</div>
+</body></html>

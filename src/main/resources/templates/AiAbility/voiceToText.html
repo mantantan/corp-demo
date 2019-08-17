@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="../js/details.css" type="text/css" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>语音转文字</title>
+	</head>
+	<body>
+		<h1>语音转文字</h1>
+
+		<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+		<script>
+			window.onerror = function(err) {
+				console.log('window.onerror: ' + err)
+			}
+
+			function log(name, obj) {
+				console.log(name + " == " + obj);
+			}
+
+			var uniqueId = 1
+			YYEsnBridge.ready(function() {})
+			var completeFunction = function(res) {}
+			var successFunction = function(res) {
+				alert(JSON.stringify(res));
+			}
+			var failFunction = function(res) {
+				alert(JSON.stringify(res));
+			}
+
+			function voiceToText(e) {
+				var data = {
+					success: successFunction,
+					fail: failFunction,
+					complete: completeFunction
+				};
+				YYEsnBridge.do('voiceToText', data)
+			}
+		</script>
+		<div id='buttons'>
+			<button onclick="voiceToText(this)">语音转文字</button><br><br>
+		</div>
+	</body>
+</html>

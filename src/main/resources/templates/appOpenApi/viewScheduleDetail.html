@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+    <head>
+    <title>查看日程详情</title>
+<link rel="stylesheet" href="../js/details.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+<h1>查看日程详情</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {})
+
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+
+	}
+	var successFunction = function(res) {
+		console.log("success data:" + res.name);
+	}
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+	}
+
+
+function viewScheduleDetail(e) {
+    var s = document.getElementById('scheduleId').value;
+    var sub = document.getElementById('subId').value;
+    var data = {
+        scheduleId:s,
+        subId:sub,
+        success: successFunction,
+        fail:failFunction,
+        complete:completeFunction
+    };
+    YYEsnBridge.do('viewScheduleDetail', data)
+}
+
+	</script>
+
+<div>
+    <label>日程Id:</label>
+    <input type="text" id='scheduleId'><br>
+    <label>日程subId(重复日程存在):</label>
+    <input type="text" id='subId'>
+</div>
+<br>
+<div id='buttons'>
+    <button onclick="viewScheduleDetail(this)">查看日程详情</button><br><br>
+</div>
+</body></html>

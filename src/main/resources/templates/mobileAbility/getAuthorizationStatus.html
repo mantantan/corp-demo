@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+    <head>
+    <title>获取授权状态</title>
+<link rel="stylesheet" href="../js/details.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+<h1>获取授权状态</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {})
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+	var successFunction = function(res) {
+    alert(JSON.stringify(res));
+	}
+	var failFunction = function(res) {
+		alert(JSON.stringify(res));
+	}
+
+function getAuthorizationStatus(e) {
+    var s = document.getElementById('authTypeId').value;
+    var data = {
+        type:s,
+        success: successFunction,
+        fail:failFunction,
+        complete:completeFunction
+    };
+    YYEsnBridge.do('getAuthorizationStatus', data)
+}
+
+	</script>
+
+<div>
+    <label>请输入授权类型 0-相册，1-相机，2-麦克风，3-位置，4-通讯录</label>
+    <input type="text" id='authTypeId' value='0'><br>
+</div>
+<br>
+<div id='buttons'>
+    <button onclick="getAuthorizationStatus(this)">查看授权状态</button><br><br>
+</div>
+<div id='log'>
+</div>
+</body></html>

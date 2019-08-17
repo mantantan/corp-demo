@@ -1,0 +1,59 @@
+<!doctype html>
+<html><head>
+    <title>保存图片到相册</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../js/details.css" type="text/css" />
+</head><body>
+    <h1>保存图片到相册</h1>
+
+    <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+    <div>
+        <button onclick="saveImageToPhotoAlbum(this)">保存图片到相册</button><br>
+    </div>
+    <div>
+        <p id="result"></p>
+    </div>
+    <textarea rows="6" type="text" class="user_input" id="user_input"></textarea><br>
+
+    <script>
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+
+    YYEsnBridge.ready(function() {
+                      var userInput = document.getElementById('user_input');
+                      userInput.innerHTML = 'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1494504655,1328855537&fm=173&app=25&f=JPEG?w=218&h=146&s=A701BB4A5704AEBE1221011D030000C3';
+                      });
+
+                      var completeFunction = function(res) {
+                          console.log('complete data:' + res);
+                      }
+
+    var successFunction = function(res) {
+        console.log('success data:' + res);
+        alert('保存成功');
+    }
+
+    var failFunction = function(res) {
+        console.log('fail data:' + res);
+        alert('保存失败');
+    }
+
+    function saveImageToPhotoAlbum(e) {
+        var userInput = document.getElementById('user_input');
+        var des = "";
+        if (userInput.value.length > 0) {
+            des = userInput.value;
+        }
+        var data = {
+            url:des,
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('saveImageToPhotoAlbum', data)
+    }
+
+        </script>
+
+</body></html>

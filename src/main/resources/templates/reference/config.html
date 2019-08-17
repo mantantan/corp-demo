@@ -1,0 +1,63 @@
+<!doctype html>
+<html><head>
+	  <title>JSAPI鉴权</title>
+	<link rel="stylesheet" href="../js/details.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+<h1>JSAPI鉴权</h1>
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+
+	YYEsnBridge.ready(function() {
+		console.log('JS got a message ready')
+	})
+
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+	var successFunction = function(res) {
+		alert("auth success");
+		console.log("auth success data:" + res);
+	}
+	var failFunction = function(res) {
+		alert("auth fail");
+		console.log("auth fail data:" + res);
+	}
+
+	function jsapiAuth(e) {
+		var data = {
+			agentId: document.getElementById("agentId").value,
+			signature: document.getElementById("signature").value,
+			timeStamp: document.getElementById("timeStamp").value,
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction,
+		};
+		console.log('JS Auth begin')
+		YYEsnBridge.do('config', data)
+	}
+
+	</script>
+<div id='buttons'>
+	<br>
+	<Input placeholder="输入agentId" style="width: 500px; height:60px;" id="agentId" /><br><br>
+	<Input placeholder="输入signature" style="width: 500px; height:60px;" id="signature"/><br><br>
+	<Input placeholder="输入timeStamp" style="width: 500px; height:60px;" id="timeStamp"/><br><br>
+
+	<button onclick="jsapiAuth(this)">JSAPI鉴权</button><br><br>
+</div>
+
+<div id='log'>
+
+</div>
+</body></html>

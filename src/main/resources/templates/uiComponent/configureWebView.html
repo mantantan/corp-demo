@@ -1,0 +1,170 @@
+<!doctype html>
+<html style="height:100%;">
+<head>
+    <title>Webview配置</title>
+    <link rel="stylesheet" href="../js/details.css" type="text/css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <style>
+    input[type=checkbox] {
+        display: inline-block;
+        vertical-align: middle;
+        width: 50px;
+        height: 50px;
+        margin-left: 40px;
+        appearance: none; /**css3属性，不支持ie，但不影响使用**/
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: transparent;
+        border: 0;
+        outline: 0 !important;
+        line-height: 50px;
+        color: #d8d8d8;
+        font-size: 40px;
+    }
+    input[type=checkbox]:after  {
+        content: "";
+        display:block;
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        line-height: 50px;
+        font-size: 40px;
+        color: #fff;
+        border: 2px solid #ddd;
+        background-color: #fff;
+        box-sizing:border-box;
+         font-size: 40px;
+    }
+    input[type=checkbox]:checked:after  {
+         content: "\2713";
+        border-color: #37AF6E;
+        background-color: #37AF6E;
+    }
+    </style>
+</head>
+<body style="height:120%;">
+<h1>Webview配置</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {
+		console.log('JS got a message ready')
+		var data = { 'Javascript Responds':'Wee!' }
+		console.log('JS responding with', data)
+		// 页面初始化时就需要执行的JSAPI放到这里
+		YYEsnBridge.registerHandler({
+			'onPullDownHandle' : function(data, callback){
+				alert('下拉了');
+				console.log('onPullDownHandle has been called');
+			}
+		});
+		YYEsnBridge.registerHandler({
+			'onPullUpHandle' : function(data, callback){
+				alert('上拉了');
+				console.log('onPullUpHandle has been called');
+			}
+		});
+
+	})
+
+	var completeFunction = function(res) {
+		console.log("complete data:"+ res);
+	}
+
+	var successFunction = function(res) {
+		console.log("success data:" + res);
+	}
+
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+		alert(JSON.stringify(res));
+	}
+
+	function configureWebView(e) {
+		var items = document.getElementsByName("category");
+		var data = {
+			pullDownRefresh:items[0].checked,
+			pullUpRefresh:items[1].checked,
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('configureWebView', data)
+		if(items[0].checked){
+			document.getElementById("pulldown").style.display="";//显示
+		}else{
+			document.getElementById("pulldown").style.display="none";//隐藏
+		}
+		if(items[1].checked){
+			document.getElementById("pullup").style.display="";//显示
+		}else{
+			document.getElementById("pullup").style.display="none";//隐藏
+		}
+	}
+
+	function stopPullDownHandle(e){
+	    var data = {
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('stopPullDownHandle', data)
+	}
+
+	function stopPullUpHandle(e){
+	    var data = {
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('stopPullUpHandle', data)
+	}
+
+</script>
+<div id="buttons">
+    <h2 style="margin:50px;font-size:30px">
+        备注：需要调用YYEsnBridge.configureWebView 配置上下拉刷新能力，
+        才能开启上下拉刷新事件。 当处理完数据刷新后，需要调用YYEsnBridge.stopPullDownHandle，
+        YYEsnBridge.stopPullUpHandle，可以停止当前页面的上下拉刷新。
+    </h2><br>
+    <p style="font-size: 30px;"><input type="checkbox" name="category" value="下拉刷新"/>下拉刷新
+        <input type="checkbox" name="category" value="上拉加载"/>上拉加载</p>
+    <button onclick="configureWebView(this)">webview配置</button>
+    <br/>
+    <br/>
+    <div id="pulldown" style="margin-top:200px;display:">
+        <lable style="margin:20px;font-size:30px">下滑页面即可刷新</lable><br>
+        <button onclick="stopPullDownHandle(this)">停止顶部下拉事件</button>
+    </div>
+    <div id="pullup" style="margin-top:200px;display:">
+        <lable style="margin:20px;font-size:30px">上拉页面即可刷新</lable><br>
+        <button  onclick="stopPullUpHandle(this)">停止底部上拉事件</button>
+        <br/>
+    </div>
+</div>
+</div>
+
+<div id='log'>
+
+</div>
+
+</body>
+</html>

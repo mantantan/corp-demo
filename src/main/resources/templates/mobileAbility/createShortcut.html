@@ -1,0 +1,49 @@
+<!doctype html>
+<html><head>
+    <title>创建桌面快捷方式</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type='text/css'>
+        #result { border-bottom:1px solid #ccc; padding:10px 10px; font-family:courier; font-size:60px; width:100%; height:auto; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+        </style>
+        <link rel="stylesheet" href="../js/details.css" type="text/css" />
+</head><body>
+    <h1>创建桌面快捷方式</h1>
+
+    <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+    <script>
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+
+    YYEsnBridge.ready(function() {});
+
+    var completeFunction = function(res) {
+        console.log('complete data:' + res);
+    }
+    var successFunction = function(res) {
+        console.log('success data:' + res);
+    }
+    var failFunction = function(res) {
+        console.log('fail data:' + res);
+    }
+
+    function createShortcut(e) {
+        var data = {
+            url:'https://www.baidu.com/',
+            name:'快捷名称',
+            icon:'https://www.baidu.com/img/baidu_resultlogo@2.png',
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('createShortcut', data)
+    }
+
+        </script>
+    <div>
+        <button onclick="createShortcut(this)">创建桌面快捷方式</button><br>
+    </div>
+    <div>
+        <p id="result"></p>
+    </div>
+</body></html>

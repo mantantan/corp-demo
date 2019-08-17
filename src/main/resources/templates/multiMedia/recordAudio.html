@@ -1,0 +1,47 @@
+<!doctype html>
+<html><head>
+    <title>录音</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../js/details.css" type="text/css" />
+</head><body>
+    <h1>录音</h1>
+
+    <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+    <script>
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+
+    YYEsnBridge.ready(function() {});
+
+    var completeFunction = function(res) {
+        console.log('complete data:' + res);
+    }
+    var successFunction = function(res) {
+        console.log('success data:' + res);
+        var audioPlay = document.getElementById('audio_play');
+        audioPlay.src = 'data:audio/wav;base64,' + res.bytes;
+    }
+    var failFunction = function(res) {
+        console.log('fail data:' + res);
+    }
+
+    function recordAudio(e) {
+        var data = {
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('recordAudio', data)
+    }
+
+        </script>
+    <div>
+        <button onclick="recordAudio(this)">录音</button><br>
+    </div>
+    <div>
+        <audio controls="controls" autobuffer="autobuffer">
+            <source id="audio_play" src="" />
+        </audio>
+    </div>
+</body></html>

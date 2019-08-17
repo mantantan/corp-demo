@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+	<style type='text/css'>
+    #storageKey {margin:50px 10px 50px 10px; font-size:40px; }
+    #storageData {margin:50px 10px 50px 10px; font-size:40px; }
+    #storageKeyId {padding:10px 10px;font-size:40px; width:95%; height:100px ; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+    #storageDataId {padding:10px 10px;font-size:40px; width:95%; height:100px ; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+</style>
+	<link rel="stylesheet" href="../js/details.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>保存图片base64字符串到本地</title>
+</head><body>
+<h1>保存图片base64字符串到本地</h1>
+
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+
+	YYEsnBridge.ready(function() {});
+
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+	var successFunction = function(res) {
+		console.log("success data:" + res);
+
+		var storageKeyId = document.getElementById('storageKeyId');
+        if (storageKeyId.value.length > 0) {
+			alert('缓存数据成功');
+		}
+		else{
+			alert('缓存数据成功 默认key值:' + JSON.stringify(res));
+		}
+	}
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+		alert('fail result:' + JSON.stringify(res));
+	}
+
+	function saveBase64Image(e) {
+
+		var storageKeyId = document.getElementById('storageKeyId');
+        var storageDataId = document.getElementById('storageDataId');
+        var strKey = '';
+        var strData = '';
+        if (storageKeyId.value.length > 0) {
+            strKey = storageKeyId.value;
+        }
+        if (storageDataId.value.length > 0) {
+            strData = storageDataId.value;
+        }
+
+		var data = {
+			'name':strKey,
+			'base64str': strData,
+      		success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		log('JS sending message', data)
+		YYEsnBridge.do('saveBase64Image', data)
+	}
+
+</script>
+
+<div id="storageKey"> 图片的名称: <br> </div>
+<input type="text" id = "storageKeyId" value=""> <br>
+<div id="storageData"> 图片的base64值: <br> </div>
+<input type="text" id="storageDataId" value=""> <br><br><br><br>
+
+<div id='buttons'>
+	<button onclick="saveBase64Image(this)">保存图片base64字符串到本地</button><br>
+</div>
+
+</body>
+</html>

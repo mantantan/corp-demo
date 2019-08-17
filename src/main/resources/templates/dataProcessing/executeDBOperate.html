@@ -1,0 +1,135 @@
+<!doctype html>
+<html><head>
+  <link rel="stylesheet" href="../js/details.css" type="text/css" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>DB操作</title>
+</head><body>
+  <h1></h1>
+  <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+  <script>
+    window.onerror = function(err) {
+      console.log('window.onerror: ' + err)
+    }
+  
+  function log(name, obj) {
+    console.log(name + " == " + obj);
+  }
+  
+  var uniqueId = 1
+  function log(message, data) {
+    var log = document.getElementById('log')
+    var el = document.createElement('div')
+    el.className = 'logLine'
+    el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+    if (log.children.length) { log.insertBefore(el, log.children[0]) }
+    else { log.appendChild(el) }
+  }
+  
+  YYEsnBridge.ready(function() {})
+  
+  var completeFunction = function(res) {
+    console.log("complete data:" + res);
+  }
+  
+  var successFunction = function(res) {
+    if (!res) {
+      alert("操作成功！");
+    } else {
+      alert(JSON.stringify(res));
+    }
+  }
+  
+  var failFunction = function(res) {
+    console.log("fail data:" + res);
+    alert(JSON.stringify(res));
+  }
+  
+  function executeDBCreateOperate(e) {
+      var data = {
+          executeType:'0',
+          executeSql:'CREATE TABLE IF NOT EXISTS NCC_USER (iid INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(26), updatetime CHAR(20),systime CHAR(20))',
+          success: successFunction,
+          fail:failFunction,
+          complete:completeFunction
+        };
+      console.log('JS sending message', data)
+      YYEsnBridge.do('executeDBOperate', data)
+    }
+  
+    function executeDBDropOperate(e) {
+      var data = {
+        executeType:'1',
+        executeSql:'DROP TABLE IF EXISTS NCC_USER',
+        success: successFunction,
+        fail:failFunction,
+        complete:completeFunction
+      };
+      console.log('JS sending message', data)
+      YYEsnBridge.do('executeDBOperate', data)
+    }
+  
+    function executeDBAddOperate(e) {
+      var data = {
+        executeType:'2',
+        executeSql:'INSERT INTO NCC_USER VALUES(1, \'mazsh\', \'2019.07.10\', \'2019.07.10\')',
+        success: successFunction,
+        fail:failFunction,
+        complete:completeFunction
+      };
+      console.log('JS sending message', data)
+      YYEsnBridge.do('executeDBOperate', data)
+    }
+  
+    function executeDBDeleteOperate(e) {
+        var data = {
+            executeType:'3',
+            executeSql:'DELETE FROM NCC_USER WHERE iid=1',
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction
+          };
+        console.log('JS sending message', data)
+        YYEsnBridge.do('executeDBOperate', data)
+      }
+  
+    function executeDBUpdateOperate(e) {
+        var data = {
+            executeType:'4',
+            executeSql:'UPDATE NCC_USER SET name = \'马增盛\'  WHERE iid=1',
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction
+          };
+        console.log('JS sending message', data)
+        YYEsnBridge.do('executeDBOperate', data)
+      }
+  
+    function executeDBQueryOperate(e) {
+        var data = {
+            executeType:'5',
+            executeSql:'SELECT * FROM NCC_USER',
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction
+          };
+        console.log('JS sending message', data)
+        YYEsnBridge.do('executeDBOperate', data)
+      }
+  
+    </script>
+  
+  <div id='buttons'>
+      <button style="font-size:40px;" onclick="executeDBCreateOperate(this)">DB建表操作</button><br><br>
+      <button style="font-size:40px;" onclick="executeDBDropOperate(this)">DB删表操作</button><br><br>
+      <button style="font-size:40px;" onclick="executeDBAddOperate(this)">DB新增数据操作</button><br><br>
+      <button style="font-size:40px;" onclick="executeDBDeleteOperate(this)">DB删除数据操作</button><br><br>
+      <button style="font-size:40px;" onclick="executeDBUpdateOperate(this)">DB修改数据操作</button><br><br>
+      <button style="font-size:40px;" onclick="executeDBQueryOperate(this)">DB查询数据操作</button><br><br>
+  </div>
+  <div>
+    <p id="result"></p>
+  </div>
+  
+  <div id='log'>
+  </div>
+</body></html>

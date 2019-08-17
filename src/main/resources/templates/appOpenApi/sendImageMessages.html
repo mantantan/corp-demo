@@ -1,0 +1,123 @@
+<!doctype html>
+<html><head>
+    <title>发送图片消息</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type='text/css'>
+        #result {border-bottom:1px solid #ccc; padding:10px 10px; font-family:courier; font-size:60px; width:100%; height:auto; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+        .user_input {padding:10px 10px; font-family:courier; font-size:60px; width:100%; height:100px ; word-wrap:break-word;word-break:break-all;overflow: hidden;margin-bottom:20px;}
+        .myLabel{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+        .myRadio {height:50px;width:50px;vertical-align:middle;}
+        </style>
+        <link rel="stylesheet" href="../js/details.css" type="text/css" />
+</head><body>
+    <h1>发送图片消息(先点击截屏，当获取到图片后，在点击发送图片)</h1>
+
+    <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+    <script>
+        var chatType = 'chat';
+        var imagePath;
+        
+        var selectMode = 0;
+            
+    function selectUserMode(value) {
+        selectMode = parseInt(value);
+    }
+        
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+
+    YYEsnBridge.ready(function() {});
+
+    var completeFunction = function(res) {
+        console.log('complete data:' + res);
+    }
+    var successFunction = function(res) {
+        console.log('success data:' + res);
+        alert('发送成功，请在会话中查看');
+    }
+    var failFunction = function(res) {
+        console.log('fail data:' + res);
+        alert(res.errDescription);
+    }
+
+    function selectChatType(value) {
+        chatType = value;
+    }
+    
+    function sendImageMessages(e) {
+        var userInput;
+        if (selectMode == 1) {
+            userInput = document.getElementById('user_input1');
+        } else {
+            userInput = document.getElementById('user_input0');
+        }
+        var des = userInput.value;
+        var data = {
+            userType:selectMode,
+            chatId : des,
+            chatType : chatType,
+            filePaths : [imagePath],
+            success:successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('sendImageMessages', data)
+    }
+    
+    var completeScreenShot = function(res) {
+        console.log("complete data:" + res);
+    }
+    
+    var successScreenShot = function(res) {
+        imagePath = res.picPath;
+        alert('获得图片d，地址为：' + res.picPath);
+    }
+    
+    var failScreenShot = function(res) {
+        alert(JSON.stringify(res));
+    }
+    
+    function screenShot(e){
+        var data = {
+            type:1,
+            resultType:1,
+            success: successScreenShot,
+            fail:failScreenShot,
+            complete:completeScreenShot
+        };
+        YYEsnBridge.do('screenShot', data)
+    }
+
+        </script>
+    
+    <button onclick="screenShot(this)">截屏</button>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectMode" onclick="selectUserMode(this.value)"
+        value="0" /><label class='myLabel'>友空间用户id</label>
+    </div>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectMode" onclick="selectUserMode(this.value)"
+        value="1" /><label class='myLabel'>友互通用户id</label>
+    </div>
+    <div>
+        <label class='myLabel'>友空间用户id:</label><br>
+        <input class='user_input' type="text" id="user_input0" value="153424"><br>
+            <label class='myLabel'>友互通用户id:</label><br>
+            <input class='user_input' type="text" id="user_input1" value="0df03dd4-210e-4b7a-90cb-a4eb24233cee"><br>
+                </div>
+    <div>
+        <label class='myLabel'>会话类型:</label><br>
+    </div>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectChatType" onclick="selectChatType(this.value)"
+        value="chat" /><label class='myLabel'>单聊</label>
+    </div>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectChatType" onclick="selectChatType(this.value)"
+        value="groupchat" /><label class='myLabel'>群聊</label>
+    </div>
+    <div>
+        <button onclick="sendImageMessages(this)">发送图片消息</button><br>
+    </div>
+</body></html>

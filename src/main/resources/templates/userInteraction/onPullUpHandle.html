@@ -1,0 +1,90 @@
+<!doctype html>
+<html style="height:100%;">
+<head>
+    <link rel="stylesheet" href="../js/details.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>浏览器窗体底部上拉</title>
+</head>
+<body style="height:120%;"  >
+<h1>浏览器窗体底部上拉</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {
+	    configureWebView(true);
+		// 页面初始化时就需要执行的JSAPI放到这里
+		YYEsnBridge.registerHandler({
+			'onPullUpHandle' : function(data, callback){
+			    alert('上拉了');
+				console.log('onPullUpHandle has been called');
+			}
+		});
+	})
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+
+	var successFunction = function(res) {
+		console.log("success data:" + res);
+	}
+
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+		alert(JSON.stringify(res));
+	}
+
+	function configureWebView(e) {
+		<!--var items = document.getElementsByName("category");-->
+		var data = {
+			pullUpRefresh:e
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('configureWebView', data)
+	}
+
+    function stopPullUpHandle(e){
+	    var data = {
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('stopPullUpHandle', data)
+	}
+</script>
+<div id='buttons' >
+    <h2 style="margin:50px;font-size:30px">
+        备注：需要调用YYEsnBridge.configureWebView 配置上拉刷新能力，才能开启上拉刷新事件。
+        当处理完数据刷新后，需要调用YYEsnBridge.stopPullUpHandle，可以停止当前页面的上拉刷新。
+    </h2><br>
+    <!--<p><input type="checkbox" name="category" value="上拉加载" />上拉加载</p>-->
+    <!--<button onclick="configureWebView(this)" style="font-size:20px">启动底部上拉事件</button>-->
+    <div id="pullup" style="margin-top:350px;display:">
+        <lable style="margin:20px;font-size:30px">上拉页面即可刷新</lable><br>
+        <button onclick="stopPullUpHandle(this)">停止底部上拉事件</button>
+    </div>
+</div>
+
+<div id='log' >
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+<style type='text/css'>
+	#result{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+	#resultDesc{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+	.myRadio {height:50px;width:50px;vertical-align:middle;}
+	.myLabel{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+</style>
+<link rel="stylesheet" href="../js/details.css" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>自定义扫描</title>
+</head><body>
+<h1>自定义扫描</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	var selectMode;
+
+	YYEsnBridge.ready(function() {});
+
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + JSON.stringify(res));
+	}
+
+	var successFunction = function(res) {
+		console.log('success data:' + JSON.stringify(res));
+	}
+
+	var failFunction = function(res) {
+		console.log("fail data:" + JSON.stringify(res));
+	}
+
+
+	function customScanQRCode(e) {
+		var data = {
+			'type':1,
+        	'callback':'scanResultCallback',
+        	'url':'http://www.baidu.com',
+        	'scanLeftRatio':0.25,
+        	'scanTopRatio':0.1,
+        	'scanWidthRatio':0.5,
+        	'scanHeightRatio':0.2,
+        	'customNavi':1,
+        	'leftItems':[{"title":"返回","callback":"scanCancel"}],
+        	'rightItems':[{"title":"手输","callback":"handwrite"},
+                          {"title":"确定","callback":"confirm","isClose":1}],
+        	'centerItems':[{"title":"设备巡检"}],
+        	'success':successFunction,
+			'fail':failFunction,
+			'complete':completeFunction
+		};
+		YYEsnBridge.do('customScanQRCode', data)
+	}
+
+</script>
+
+<div id='buttons'>
+	<button onclick="customScanQRCode(this)">自定义扫描</button><br><br><br>
+</div>
+
+</body>
+</html>

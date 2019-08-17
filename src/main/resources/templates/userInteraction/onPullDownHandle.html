@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="../js/details.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>浏览器窗体顶部下拉</title>
+</head>
+<body>
+<h1>浏览器窗体顶部下拉</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {
+	    configureWebView(this);
+		// 页面初始化时就需要执行的JSAPI放到这里
+		YYEsnBridge.registerHandler({
+			'onPullDownHandle' : function(data, callback){
+				alert('下拉了');
+				console.log('onPullDownHandle has been called');
+			}
+		});
+	})
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+
+	var successFunction = function(res) {
+		console.log("success data:" + res);
+	}
+
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+		alert(JSON.stringify(res));
+	}
+
+	function configureWebView(e) {
+		<!--var items = document.getElementsByName("category");-->
+		var data = {
+			pullDownRefresh:true
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('configureWebView', data)
+	}
+	function stopPullDownHandle(e){
+	    var data = {
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('stopPullDownHandle', data)
+	}
+</script>
+<div id='buttons'>
+    <!--<p><input class="mycheckbox" type="checkbox" name="category" value="下拉刷新"  style="zoom:300%;"/>下拉刷新</p>-->
+    <!--<button onclick="configureWebView(this)" style="font-size:20px">webview配置</button>-->
+    <h2 style="margin:50px;font-size:30px">
+        备注：需要调用YYEsnBridge.configureWebView 配置下拉刷新能力，才能开启下拉刷新事件。
+        当处理完数据刷新后，需要调用YYEsnBridge.stopPullDownHandle，可以停止当前页面的下拉刷新。
+    </h2><br>
+    <lable style="margin:20px;font-size:30px">下滑页面即可刷新</lable><br>
+    <button  onclick="stopPullDownHandle(this)">停止顶部下拉事件</button>
+    <br>
+</div>
+
+<div id='log'>
+
+</div>
+</body>
+</html>

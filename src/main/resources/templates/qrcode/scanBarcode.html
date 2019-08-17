@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+<style type='text/css'>
+	#result{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+	#resultDesc{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+</style>
+<link rel="stylesheet" href="../js/details.css" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>条码扫描</title>
+</head><body>
+<h1>条码扫描</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+
+	YYEsnBridge.ready(function() {});
+
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + JSON.stringify(res));
+	}
+
+	var successFunction = function(res) {
+		console.log('success data:' + JSON.stringify(res));
+		var scanResultLabel = document.getElementById('result');
+		if (res.barCode) {
+			scanResultLabel.innerHTML = res.barCode;
+		}
+		else{
+			scanResultLabel.innerHTML = '';
+		}
+	}
+
+	var failFunction = function(res) {
+		console.log("fail data:" + JSON.stringify(res));
+	}
+
+	function scanBarcode(e) {
+		var data = {
+			success:successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		YYEsnBridge.do('scanBarcode', data)
+	}
+
+</script>
+
+<div id='buttons'>
+	<button onclick="scanBarcode(this)">条码扫描</button><br><br><br>
+</div>
+
+<div>
+	<label id='resultDesc'>条码内容：</label><label id='result'></label>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="../js/details.css" type="text/css" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type='text/css'>
+			#result {
+				margin: 50px 50px 50px 50px;
+				height: auto;
+			}
+		</style>
+		<title>读取本地图片</title>
+	</head>
+	<body>
+		<h1>读取本地图片</h1>
+
+		<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+		<script>
+			window.onerror = function(err) {
+				console.log('window.onerror: ' + err)
+			}
+
+			function log(name, obj) {
+				console.log(name + " == " + obj);
+			}
+
+			var uniqueId = 1
+			YYEsnBridge.ready(function() {})
+			var completeFunction = function(res) {}
+			var successFunction = function(res) {
+				var image = document.getElementById('result');
+				image.src = 'data:image/jpg;base64,' + res.imageData;
+			}
+			var failFunction = function(res) {
+				alert(JSON.stringify(res));
+			}
+
+			function loadImageFromLocal(e) {
+				var data = {
+					url: "https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike180%2C5%2C5%2C180%2C60/sign=d73db480b07eca80060831b5f04afcb8/e61190ef76c6a7efab37ba85fdfaaf51f3de667b.jpg",
+					success: successFunction,
+					fail: failFunction,
+					complete: completeFunction
+				};
+				YYEsnBridge.do('loadImageFromLocal', data)
+			}
+		</script>
+		<div id='buttons'>
+			<button onclick="loadImageFromLocal(this)">读取本地图片</button><br><br>
+		</div>
+
+		<div>
+			<img id="result" src="" alt=""></img>
+		</div>
+	</body>
+</html>

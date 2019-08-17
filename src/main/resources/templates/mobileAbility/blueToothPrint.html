@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="../js/details.css" type="text/css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style type='text/css'>
+            #result {
+                border-bottom: 1px solid #ccc;
+                padding: 10px 10px;
+                font-family: courier;
+                font-size: 60px;
+                width: 100%;
+                height: auto;
+                word-wrap: break-word;
+                word-break: break-all;
+                overflow: hidden;
+            }
+        </style>
+        <title>蓝牙打印机打印</title>
+    </head>
+    <body>
+        <h1>蓝牙打印机打印</h1>
+        
+        <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+        <script>
+            window.onerror = function(err) {
+                console.log('window.onerror: ' + err)
+            }
+        
+        function log(name, obj) {
+            console.log(name + " == " + obj);
+        }
+        
+        var uniqueId = 1
+        YYEsnBridge.ready(
+                          function() {
+                          var data = { 'Javascript Responds':'Wee!' }
+                          // 页面初始化时就需要执行的JSAPI放到这里
+                          YYEsnBridge.registerHandler({
+                                                      'registerFunc' : function(data, callback){
+                                                      var resultLabel = document.getElementById('result');
+                                                      resultLabel.innerHTML = JSON.stringify(data);
+                                                      }
+                                                      });
+                          })
+        var completeFunction = function(res) {}
+        var successFunction = function(res) {
+            var resultLabel = document.getElementById('result');
+            resultLabel.innerHTML = JSON.stringify(res);
+        }
+        var failFunction = function(res) {
+            alert(JSON.stringify(res));
+        }
+        
+        function blueToothPrint(e) {
+            //此处格式与此前畅捷通的格式一样
+            var object = {
+                type: "txt",
+                value: "【销货单\n" +
+                "客户: vip客户乙\n" +
+                "客户电话: 13312341234\n" +
+                "单号: SA-2019-07-0008\n" +
+                "日期: 2019-07-15\n" +
+                "结算客户: vip客户乙\n" +
+                "=== === === === === === ===\n" +
+                "名称 / 编码\n" +
+                "数量 单价 金额\n" +
+                "-- -- -- -- -- -- -- -- \n" +
+                "1.001 /   001 /  \n" +
+                "20.00 个 55.00 1100.00\n" +
+                "-- -- -- -- -- -- -- -- \n" +
+                "总数量: 20.00\n" +
+                "总金额: 1100\n" +
+                "现结金额: 0\n" +
+                "抹零: 0\n" +
+                "使用预收: 0\n" +
+                "打印日期: 2019-07-16 20:11:06\n" +
+                "公司名称: 正式-标准-分开单据-新建0311\n" +
+                "联系电话: 13312341234\n" +
+                "业务员: 立顿奶茶\n" +
+                "业务员电话:\n\n" +
+                "客户签名: ________________\n" +
+                "=== === === === === === === \n"
+            };
+            var qrc = {
+                type: "qrc",
+                value: "www.baidu.com",
+            }
+			var img = {
+				type:"img",
+				value:"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"
+			}
+            var content = [object, qrc,img];
+            var data = {
+                printNum: 1,
+                content: content,
+                success: successFunction,
+                fail: failFunction,
+                complete: completeFunction
+            };
+            YYEsnBridge.do('blueToothPrint', data)
+        }
+        
+        function blueToothConnectState(e) {
+            var data = {
+                success: successFunction,
+                fail: failFunction,
+                complete: completeFunction
+            };
+            YYEsnBridge.do('blueToothConnectState', data)
+        }
+        
+        function getBlueToothState(e) {
+            var data = {
+                success: successFunction,
+                fail: failFunction,
+                complete: completeFunction
+            };
+            YYEsnBridge.do('getBlueToothState', data)
+        }
+        
+        function blueToothScan(e) {
+            var data = {
+                registerFunc: 'registerFunc',
+                success: successFunction,
+                fail: failFunction,
+                complete: completeFunction
+            };
+            YYEsnBridge.do('blueToothScan', data)
+        }
+        
+        function blueToothConnect(e) {
+            var data = {
+                deviceIndentify: '08984744-94E7-D08B-A7BD-F796F62651AB',
+                deviceName: 'DP-HT201-4',
+                success: successFunction,
+                fail: failFunction,
+                complete: completeFunction
+            };
+            YYEsnBridge.do('blueToothConnect', data)
+        }
+        
+        function blueToothStopScan(e) {
+            var data = {
+                success: successFunction,
+                fail: failFunction,
+                complete: completeFunction
+            };
+            YYEsnBridge.do('blueToothStopScan', data)
+        }
+        
+        function blueToothDisConnect(e) {
+            var data = {
+                success: successFunction,
+                fail: failFunction,
+                complete: completeFunction
+            };
+            YYEsnBridge.do('blueToothDisConnect', data)
+        }
+        </script>
+        <div id='buttons'>
+            <button onclick="getBlueToothState(this)">获取打开状态</button><br><br>
+            <button onclick="blueToothScan(this)">蓝牙扫描</button><br><br>
+            <button onclick="blueToothConnect(this)">蓝牙连接</button><br><br>
+            <button onclick="blueToothConnectState(this)">蓝牙获取连接</button><br><br>
+            <button onclick="blueToothPrint(this)">蓝牙打印</button><br><br>
+            <button onclick="blueToothStopScan(this)">蓝牙停止扫描</button><br><br>
+            <button onclick="blueToothDisConnect(this)">蓝牙断开连接</button><br><br>
+        </div>
+        
+        <div>
+            <p id="result"></p>
+        </div>
+    </body>
+</html>

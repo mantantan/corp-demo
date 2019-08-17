@@ -1,0 +1,84 @@
+<!doctype html>
+<html><head>
+	<title>警告窗</title>
+	<link rel="stylesheet" href="../js/details.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+<h1>警告窗</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {})
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+	var successFunction = function(res) {
+		var resultLabel = document.getElementById('result');
+        resultLabel.innerHTML = "点击的按钮：" + JSON.stringify(res);
+	}
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+	}
+
+	// 只有一个按钮的弹窗
+	function showAlert(e) {
+		var data = {
+			type: 'alert',
+        	title: '温馨提示',
+        	content:'消息已发出',
+        	confirmButtonText: '我知道了',
+        	success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		YYEsnBridge.do('showAlert', data)
+	}
+
+	// 有两个按钮的弹窗
+	function showAlert1(e) {
+		var data = {
+			'type': 'confirm',
+        	'title': '提示',
+        	'content':'确认退出该空间?',
+        	'confirmButtonText': '确认',
+        	'cancelButtonText': '取消',
+        	success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		YYEsnBridge.do('showAlert', data)
+	}
+
+	</script>
+<div id='button'>
+	<button onclick="showAlert(this)">一个按钮警告窗</button><br>
+</div>
+<div id='button1'>
+	<button onclick="showAlert1(this)">两个按钮警告窗</button><br>
+</div>
+
+<div id='log'>
+	<div>
+		<p id="result"></p>
+	</div>
+</div>
+</body></html>

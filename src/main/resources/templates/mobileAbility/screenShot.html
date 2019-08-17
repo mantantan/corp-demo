@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="../js/details.css" type="text/css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>截屏</title>
+    <style type='text/css'>
+			#result {
+				margin: 50px 50px 50px 50px;
+				height: auto;
+			}
+			#imagePath{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+	        .myRadio {height:50px;width:50px;vertical-align:middle;}
+	        .myLabel{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+
+    </style>
+</head>
+<body>
+<h1>截屏</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {})
+
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+
+	var successFunction = function(res) {
+		<!--var resultLabel = document.getElementById('result');-->
+        <!--resultLabel.innerHTML = "图片base64编码字符串：" + res.picStr;-->
+        if(res.picStr){
+            var base64 = document.getElementById('base64');
+            base64.src = 'data:image/jpg;base64,' + res.picStr;
+		}
+		if(res.picPath){
+            var path = document.getElementById('path');
+            path.innerHTML = res.picPath;
+		}
+	}
+
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+		alert(JSON.stringify(res));
+	}
+
+	function screenShot(e){
+		var data = {
+		    type:0,
+		    resultType:resultType,
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		console.log('JS sending message', data)
+		YYEsnBridge.do('screenShot', data)
+	}
+
+	var resultType;
+	function setResult(value) {
+        resultType = value;
+        if (value == '1') {
+        	document.getElementById("imagePath").style.display="inline";
+        	document.getElementById("imageBase64").style.display="none";
+        }else{
+			document.getElementById("imagePath").style.display="none";
+			document.getElementById("imageBase64").style.display="inline";
+        }
+    }
+
+</script>
+
+<div id='buttons'>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectMode" onclick="setResult(this.value)" value="0" checked/><label
+            class='myLabel'>返回base64字符串</label>
+    </div>
+
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectMode" onclick="setResult(this.value)" value="1"/><label
+            class='myLabel'>返回图片路径</label>
+    </div>
+    <button onclick="screenShot(this)">截屏</button>
+</div>
+<div id='imageBase64'>
+    <label class="myLabel">截屏图片:</label><br>
+    <img id="base64" src=""/>
+</div>
+<div id='imagePath' style="display:none">
+    <label class="myLabel">截图路径：</label><br>
+    <label id='path'></label>
+</div>
+<div id='log'>
+</div>
+</body>
+</html>

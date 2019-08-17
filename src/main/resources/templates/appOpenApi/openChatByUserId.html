@@ -1,0 +1,76 @@
+<!doctype html>
+<html><head>
+    <title>发起单聊会话</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type='text/css'>
+        #result {border-bottom:1px solid #ccc; padding:10px 10px; font-family:courier; font-size:60px; width:100%; height:auto; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+        .user_input {padding:10px 10px; font-family:courier; font-size:60px; width:100%; height:100px ; word-wrap:break-word;word-break:break-all;overflow: hidden;margin-bottom:20px;}
+        .myLabel{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+        .myRadio {height:50px;width:50px;vertical-align:middle;}
+        </style>
+        <link rel="stylesheet" href="../js/details.css" type="text/css" />
+</head><body>
+    <h1>发起单聊会话</h1>
+
+    <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+    <script>
+        var selectMode = 0;
+        
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+    
+    function selectUserMode(value) {
+        selectMode = parseInt(value);
+    }
+
+    YYEsnBridge.ready(function() {});
+
+    var completeFunction = function(res) {
+        console.log('complete data:' + res);
+    }
+    var successFunction = function(res) {
+        console.log('success data:' + res);
+    }
+    var failFunction = function(res) {
+        console.log('fail data:' + res);
+        alert(res.errDescription);
+    }
+
+    function openChatByUserId(e) {
+        var userInput;
+        if (selectMode == 1) {
+            userInput = document.getElementById('user_input1');
+        } else {
+            userInput = document.getElementById('user_input0');
+        }
+        var des = userInput.value;
+        var data = {
+            userType:selectMode,
+            userId:des,
+            success:successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('openChatByUserId', data)
+    }
+
+        </script>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectMode" onclick="selectUserMode(this.value)"
+        value="0" /><label class='myLabel'>友空间用户id</label>
+    </div>
+    <div style="height:100px;">
+        <input class='myRadio' type="radio" name="selectMode" onclick="selectUserMode(this.value)"
+        value="1" /><label class='myLabel'>友互通用户id</label>
+    </div>
+    <div>
+        <label class='myLabel'>友空间用户id:</label><br>
+        <input class='user_input' type="text" id="user_input0" value="153424"><br>
+        <label class='myLabel'>友互通用户id:</label><br>
+        <input class='user_input' type="text" id="user_input1" value="0df03dd4-210e-4b7a-90cb-a4eb24233cee"><br>
+    </div>
+    <div>
+        <button onclick="openChatByUserId(this)">发起单聊会话</button><br>
+    </div>
+</body></html>

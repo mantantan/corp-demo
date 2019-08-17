@@ -1,0 +1,63 @@
+<!doctype html>
+<html><head>
+    <title>新建日程</title>
+    <link rel="stylesheet" href="../js/details.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+    <h1>新建日程</h1>
+    <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+    <script>
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+
+    function log(name, obj) {
+        console.log(name + " == " + obj);
+    }
+
+    var uniqueId = 1
+    function log(message, data) {
+        var log = document.getElementById('log')
+        var el = document.createElement('div')
+        el.className = 'logLine'
+        el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+        if (log.children.length) { log.insertBefore(el, log.children[0]) }
+        else { log.appendChild(el) }
+    }
+
+    
+    YYEsnBridge.ready(function() {})
+    
+    var completeFunction = function(res) {
+        console.log("complete data:" + res);
+        }
+    
+    var successFunction = function(res) {
+        var resultLabel = document.getElementById('result');
+        resultLabel.innerHTML = "日程创建成功：" + JSON.stringify(res);
+    }
+    var failFunction = function(res) {
+        console.log("fail data:" + res);
+    }
+
+    
+    function createNewSchedule(e) {
+        var data = {
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('createNewSchedule', data)
+    }
+        </script>
+    <div id='buttons'>
+        <button onclick="createNewSchedule(this)">新建日程</button><br><br>
+    </div>
+
+    <div id='log'>
+    </div>
+    <div>
+        <p id="result"></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html><head>
+    <title>获取个人友互通信息</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type='text/css'>
+        #result1 { border-bottom:1px solid #ccc; padding:10px 10px; font-family:courier; font-size:60px; width:100%; height:auto; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+        #result2 { border-bottom:1px solid #ccc; padding:10px 10px; font-family:courier; font-size:60px; width:100%; height:auto; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+        </style>
+        <link rel="stylesheet" href="../js/details.css" type="text/css" />
+</head><body>
+    <h1>获取个人友互通信息</h1>
+
+    <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+    <script>
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+
+    YYEsnBridge.ready(function() {})
+
+    var completeFunction = function(res) {
+        console.log('complete data:' + res);
+    }
+    var successFunction = function(res) {
+        console.log('success data:' + res);
+        var resultLabel1 = document.getElementById('result1');
+        resultLabel1.innerHTML = "友互通id：" + res.yht_userid;
+        var resultLabel2 = document.getElementById('result2');
+        resultLabel2.innerHTML = "租户id：" + res.tenant_id;
+    }
+    var failFunction = function(res) {
+        console.log('fail data:' + res);
+    }
+
+    function getUserYHTInfo(e) {
+        var data = {
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('getUserYHTInfo', data)
+    }
+
+        </script>
+    <div>
+        <button onclick="getUserYHTInfo(this)">获取个人友互通信息</button><br>
+    </div>
+    <div>
+        <p id="result1"></p>
+        <p id="result2"></p>
+    </div>
+</body></html>

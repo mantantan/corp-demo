@@ -1,0 +1,44 @@
+<!doctype html>
+<html><head>
+    <title>选取本地文件</title>
+    <link rel="stylesheet" href="../js/details.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+<h1>选取本地文件</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+    window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+    }
+
+    YYEsnBridge.ready(function() {});
+
+    var completeFunction = function(res) {
+        console.log("complete data:" + res);
+    }
+
+    var successFunction = function(res) {
+        console.log('success data:' + res);
+        var jsonData = document.getElementById('jsonStr');
+        jsonData.innerHTML = JSON.stringify(res);
+    }
+    var failFunction = function(res) {
+        console.log("fail data:" + res);
+    }
+
+    function chooseLocalFiles(e) {
+        var data = {
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('chooseLocalFiles', data)
+    }
+</script>
+
+<div id='buttons'>
+    <button onclick="chooseLocalFiles(this)">选取</button><br>
+</div>
+<textarea class="ps" id="jsonStr" cols="80" rows="50"></textarea>
+</body></html>

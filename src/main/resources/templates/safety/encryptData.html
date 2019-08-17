@@ -1,0 +1,72 @@
+<!doctype html>
+<html><head>
+	<title>信息加密</title>
+	<link rel="stylesheet" href="../js/details.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+<h1>信息加密</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {//必须调用
+		// 页面初始化时就需要执行的JSAPI放到这里
+	})
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+	var successFunction = function(res) {
+		alert('success result:' + JSON.stringify(res));
+// 		if (Array.isArray(res) && res.length > 0) {
+// 			alert(res[0].name)
+// 		}
+// 		console.log("success data:" + res.name);
+		//log('success result', JSON.stringify(res));
+	}
+	var failFunction = function(res) {
+		alert('fail result:' + JSON.stringify(res));
+// 		console.log("fail data:" + res);
+		//log('fail result', JSON.stringify(res));
+	}
+
+	function encryptData(e) {
+		var inputData = document.getElementById('input_data').value;
+		var data = {
+			data: inputData,
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		YYEsnBridge.do('encryptData', data)
+	}
+
+	</script>
+<div>
+	待加密数据：<input id='input_data' type='text' value='123' />
+</div>
+<div id='buttons'>
+	<button onclick="encryptData(this)">信息加密</button><br>
+</div>
+
+<div id='log'>
+
+</div>
+</body></html>

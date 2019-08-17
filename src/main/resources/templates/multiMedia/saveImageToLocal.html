@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="../js/details.css" type="text/css" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>存储图片到本地</title>
+	</head>
+	<body>
+		<h1>存储图片到本地</h1>
+
+		<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+		<script>
+			window.onerror = function(err) {
+				console.log('window.onerror: ' + err)
+			}
+
+			function log(name, obj) {
+				console.log(name + " == " + obj);
+			}
+
+			var uniqueId = 1
+			YYEsnBridge.ready(function() {})
+
+
+			var completeFunction = function(res) {}
+			var successFunction = function(res) {
+				alert('保存成功');
+			}
+			var failFunction = function(res) {
+				alert(JSON.stringify(res));
+			}
+
+			function saveImageToLocal(e) {
+				var data = {
+					url: "https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike180%2C5%2C5%2C180%2C60/sign=d73db480b07eca80060831b5f04afcb8/e61190ef76c6a7efab37ba85fdfaaf51f3de667b.jpg",
+					success: successFunction,
+					fail: failFunction,
+					complete: completeFunction
+				};
+				YYEsnBridge.do('saveImageToLocal', data)
+			}
+		</script>
+		<div id='buttons'>
+			<button onclick="saveImageToLocal(this)">存储图片到本地</button><br><br>
+		</div>
+
+		<div id='log'>
+
+		</div>
+	</body>
+</html>

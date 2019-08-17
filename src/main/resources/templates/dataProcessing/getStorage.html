@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+    <style type='text/css'>
+    #storageKey {margin:50px 10px 50px 10px; font-size:40px; }
+    #storageKeyId {padding:10px 10px;font-size:40px; width:95%; height:100px ; word-wrap:break-word;word-break:break-all;overflow: hidden;}
+	</style>
+
+    <link rel="stylesheet" href="../js/details.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>数据读取</title>
+</head><body>
+<h1>数据读取</h1>
+
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+
+	YYEsnBridge.ready(function() {});
+
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+	var successFunction = function(res) {
+		console.log("success data:" + res);
+		alert('success result:' + JSON.stringify(res));
+	}
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+		alert('fail result:' + JSON.stringify(res));
+	}
+
+	function getStorage(e) {
+		var storageKeyId = document.getElementById('storageKeyId');
+        var strKey = '';
+        if (storageKeyId.value.length > 0) {
+            strKey = storageKeyId.value;
+        }
+
+		var data = {
+        	'key':strKey,
+      		success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		log('JS sending message', data)
+		YYEsnBridge.do('getStorage', data)
+	}
+
+</script>
+
+<div id="storageKey"> 获取的key: <br> </div>
+<input type="text" id = "storageKeyId" value=""> <br><br><br><br>
+
+<div id='buttons'>
+    <button onclick="getStorage(this)">存储获取</button><br>
+</div>
+
+</body>
+</html>

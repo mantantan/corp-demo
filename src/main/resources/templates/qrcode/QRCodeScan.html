@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+<style type='text/css'>
+	#result{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+	#resultDesc{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+	.myRadio {height:50px;width:50px;vertical-align:middle;}
+	.myLabel{height:50px;font-size:40px;text-align:center;vertical-align:middle;margin-left:10px;}
+</style>
+<link rel="stylesheet" href="../js/details.css" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>二维码扫描</title>
+</head><body>
+<h1>二维码扫描</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	var selectMode;
+
+	YYEsnBridge.ready(function() {});
+
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + JSON.stringify(res));
+	}
+
+	var successFunction = function(res) {
+		console.log('success data:' + JSON.stringify(res));
+		var scanResultLabel = document.getElementById('result');
+		if (res.qrCode) {
+			scanResultLabel.innerHTML = res.qrCode;
+		}
+		else{
+			scanResultLabel.innerHTML = '';
+		}
+	}
+
+	var failFunction = function(res) {
+		console.log("fail data:" + JSON.stringify(res));
+	}
+
+	function scanMode(value) {
+        selectMode = value;
+        if (value == 'qrCode') {
+        	document.getElementById("result").style.display="inline";
+        	document.getElementById("resultDesc").style.display="inline";
+        }
+        else{
+			document.getElementById("result").style.display="none";
+			document.getElementById("resultDesc").style.display="none";
+        }
+    }
+
+	function qrCodeScan(e) {
+		var data = {
+			type:selectMode,
+			success:successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		YYEsnBridge.do('QRCodeScan', data)
+	}
+
+</script>
+
+<div style="height:100px;">
+	<input class='myRadio' type="radio" name="selectMode" onclick="scanMode(this.value)" value="qrCode" checked/><label class='myLabel'>返回二维码内容</label>
+</div>
+
+<div style="height:100px;">
+	<input class='myRadio' type="radio" name="selectMode" onclick="scanMode(this.value)" value="showWeb" /><label class='myLabel'>跳转网页</label>
+</div>
+
+<div id='buttons'>
+	<button onclick="qrCodeScan(this)">二维码扫描</button><br><br><br>
+</div>
+
+<div>
+	<label id='resultDesc'>二维码内容：</label><label id='result'></label>
+</div>
+
+</body>
+</html>

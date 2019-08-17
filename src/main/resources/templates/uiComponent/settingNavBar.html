@@ -1,0 +1,82 @@
+<!doctype html>
+<html><head>
+    <title>导航栏配置</title>
+	<link rel="stylesheet" href="../js/details.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+<h1>导航栏配置</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {
+		
+                      YYEsnBridge.registerHandler({
+                                                  'shareClicks' : function(data, callback){
+                                                  console.log('netWorkChange has been called');
+                                                  console.log('netWorkChange name is:' + data.name);
+                                                  alert(JSON.stringify(data));
+                                                  // 需要再回调native时调用
+                                                  typeof callback === 'function' && callback({name:'FromJSName'});
+                                                  }
+                                                  });
+
+	})
+
+
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+	var successFunction = function(res) {
+		if (Array.isArray(res) && res.length > 0) {
+			alert(res[0].name)
+		}
+        alert(JSON.stringify(res));
+		console.log("success data:" + res.name);
+	}
+	var failFunction = function(res) {
+		console.log("fail data:" + res);
+	}
+
+function settingNavBar(e) {
+    var data = {
+        backgroundColor:'#FFB6C1',
+        tintColor:'#7B68EE',
+        statusBarStyle:'1',
+        centerItems:[{title:'设置导航栏'}],
+        rightItems:[{title:'分享',callback:'shareClicks'}],
+        success: successFunction,
+        fail:failFunction,
+        complete:completeFunction
+    };
+    YYEsnBridge.do('settingNavBar', data)
+}
+	</script>
+<div id='buttons'>
+
+    <button onclick="settingNavBar(this)">导航栏配置</button><br><br>
+
+
+</div>
+
+<div id='log'>
+
+</div>
+</body></html>

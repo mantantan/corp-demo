@@ -1,0 +1,84 @@
+<!doctype html>
+<html><head>
+    <title>图片预览</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="../js/details.css" type="text/css" />
+</head><body>
+    <h1>图片预览</h1>
+
+    <script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+    <div>
+        <button onclick="scanUrlImages(this)">图片预览</button><br>
+    </div>
+    <div>
+        <input type="text" class="user_input" id="user_input0" value="1"><br>
+            <textarea rows="6" type="text" class="user_input" id="user_input1"></textarea><br>
+            <textarea rows="6" type="text" class="user_input" id="user_input2"></textarea><br>
+            <textarea rows="6" type="text" class="user_input" id="user_input3"></textarea><br>
+    </div>
+    <script>
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+
+    YYEsnBridge.ready(function() {
+                      var userInput1 = document.getElementById('user_input1');
+                      var userInput2 = document.getElementById('user_input2');
+                      var userInput3 = document.getElementById('user_input3');
+                      userInput1.innerHTML = 'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1494504655,1328855537&fm=173&app=25&f=JPEG?w=218&h=146&s=A701BB4A5704AEBE1221011D030000C3';
+                      userInput2.innerHTML = 'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=195429722,3269091169&fm=173&app=49&f=JPEG?w=218&h=146&s=4900C51108104EC01CA07145030070E3';
+                      userInput3.innerHTML = 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1942034301,3445059693&fm=173&app=49&f=JPEG?w=218&h=146&s=0540FC00B9FE844B0E41BC830300E0C1';
+                      
+                      YYEsnBridge.registerHandler({
+                            'onScanUrlImagesEnd' : function(data, callback) {
+                                    alert('index is ' + data.index);
+                            }
+                     });
+    })
+
+                      var completeFunction = function(res) {
+                          console.log('complete data:' + res);
+                      }
+
+    var successFunction = function(res) {
+        console.log('success data:' + res);
+    }
+    var failFunction = function(res) {
+        console.log('fail data:' + res);
+    }
+
+    function scanUrlImages(e) {
+        var userInput0 = document.getElementById('user_input0');
+        var userInput1 = document.getElementById('user_input1');
+        var userInput2 = document.getElementById('user_input2');
+        var userInput3 = document.getElementById('user_input3');
+
+        var index = 0;
+        var array = new Array();
+        if (userInput0.value.length > 0) {
+            index = parseInt(userInput0.value);
+        }
+        if (userInput1.value.length > 0) {
+            array.push(userInput1.value);
+        }
+        if (userInput2.value.length > 0) {
+            array.push(userInput2.value);
+        }
+        if (userInput3.value.length > 0) {
+            array.push(userInput3.value);
+        }
+
+        var data = {
+            images:array,
+            index:index,
+            callback: 'onScanUrlImagesEnd',//注册一个方法用来响应预览结束事件
+            success:successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('scanUrlImages', data)
+    }
+
+        </script>
+</body>
+</html>

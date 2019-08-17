@@ -1,0 +1,79 @@
+<!doctype html>
+<html><head>
+	<title>地图打点以及导航</title>
+	<link rel="stylesheet" href="../js/details.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+<h1>地图打点以及导航</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+	window.onerror = function(err) {
+		console.log('window.onerror: ' + err)
+	}
+
+	function log(name, obj) {
+		console.log(name + " == " + obj);
+	}
+
+	var uniqueId = 1
+	function log(message, data) {
+		var log = document.getElementById('log')
+		var el = document.createElement('div')
+		el.className = 'logLine'
+		el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+		if (log.children.length) { log.insertBefore(el, log.children[0]) }
+		else { log.appendChild(el) }
+	}
+
+	YYEsnBridge.ready(function() {//必须调用
+		// 页面初始化时就需要执行的JSAPI放到这里
+	})
+	
+	var completeFunction = function(res) {
+		console.log("complete data:" + res);
+	}
+
+	var successFunction = function(res) {
+		// alert('success result:' + JSON.stringify(res));
+		var resultLabel = document.getElementById('result');
+				resultLabel.innerHTML = JSON.stringify(res);
+	}
+
+	var failFunction = function(res) {
+		alert('fail result:' + JSON.stringify(res));
+	}
+
+	function markAndNavigationDestination(e) {
+		var userInfo = {
+			header:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1561624684403&di=61b509f62f3d41ba3b3bc379235db7b3&imgtype=0&src=http%3A%2F%2Fwww.sosit.com.cn%2Fuploadfile%2F2016%2F0316%2F20160316074835297.png',
+			userId:'3614234',
+			userName:'客户名称'
+		};
+		var data = {
+			address:'天安门',
+			latitude:'39.908696',
+			longitude:'116.397474',
+			subAddress:'北京市东城区长安街',
+			navigation:true,
+			infomation:'这是天安门呢~',
+			userInfo:userInfo,
+			success: successFunction,
+			fail:failFunction,
+			complete:completeFunction
+		};
+		YYEsnBridge.do('markAndNavigationDestination', data)
+	}
+
+</script>
+
+<div id='buttons'>
+	<button onclick="markAndNavigationDestination(this)">地图打点以及导航</button><br>
+</div>
+<div>
+  <p id="result"></p>
+</div>
+
+<div id='log'>
+</div>
+</body></html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html><head>
+    <title>查看人员详细信息</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../js/details.css" type="text/css" />
+</head><body>
+<h1>查看人员详细信息</h1>
+
+<script type="text/javascript" src="https://openapi-daily.yyuap.com/h5-demo/js/esn.min.js"></script>
+<script>
+        window.onerror = function(err) {
+            console.log('window.onerror: ' + err)
+        }
+
+    YYEsnBridge.ready(function() {});
+
+    var completeFunction = function(res) {
+        console.log('complete data:' + res);
+    }
+    var successFunction = function(res) {
+        console.log('success data:' + res);
+    }
+    var failFunction = function(res) {
+        console.log('fail data:' + res);
+    }
+
+    function viewUserInfo(e) {
+        var data = {
+            memberId: 153424,
+            success: successFunction,
+            fail:failFunction,
+            complete:completeFunction
+        };
+        YYEsnBridge.do('viewUserInfo', data)
+    }
+
+        </script>
+<div>
+    <label class='myLabel'>人员memberId：</label><input type="text" id="user_input" value="153424"><br>
+</div>
+<br>
+<div>
+    <button onclick="viewUserInfo(this)">查看信息</button><br>
+</div>
+
+</body></html>
